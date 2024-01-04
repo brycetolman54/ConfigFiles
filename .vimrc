@@ -1,5 +1,5 @@
 " Opening Notes {
-"   
+   "   
 "   This is the personal .vimrc file for Bryce Tolman.
 "   It's not amazing, but it's there.
 "   Enjoy it
@@ -16,7 +16,7 @@ set foldminlines=2
 set foldcolumn=0
 
 "}
-
+   
 
 " Map Leader Commands {
 
@@ -24,9 +24,14 @@ set foldcolumn=0
 let mapleader=","
 
 " Open/Close Brackets
-inoremap <leader>zc <Esc>zc<CR>i
-inoremap <leader>zo <Esc>zo<CR>i   
+inoremap <leader>zc <Esc>zc
+inoremap <leader>zo <Esc>zo   
 
+" Moving in file operations
+inoremap <leader>7 <Esc>$
+inoremap <leader>0 <Esc>0
+inoremap <leader>g <Esc>G
+inoremap <leader>gg <Esc>gg
 
 " File Operations
 inoremap <leader><leader> <Esc>
@@ -35,8 +40,7 @@ inoremap <leader>w <Esc>:W<Return>
 
 " Formatting Operations
 inoremap <leader>o <Esc>o 
-inoremap <leader>0 <Esc>0
-inoremap <leader>$ <Esc>$
+inoremap <leader>r <Esc><C-r>
 inoremap <leader>y <Esc>y
 inoremap <leader>p <Esc>p
 inoremap <leader>d <Esc>d
@@ -160,7 +164,7 @@ set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/
 
 " Command List Window {
 
-" Function to show the command list
+" Function to show the command list {
 function! UpdateCommandList()
 
     let command_list = [
@@ -178,22 +182,54 @@ function! UpdateCommandList()
         \ "Cut: d",     
         \ ]
 
-    " Clear existing content
-    call deletebufline('CommandList', 1, '$')
-
     " Insert new content
     call setbufline('CommandList', 1, command_list)
 endfunction
+" }
 
-" Open a new scratch buffer at the open of the program and populate it
-autocmd VimEnter * vertical split CommandList | vertical resize 20 | setlocal nonumber | setlocal nocursorcolumn | setlocal nocursorline | wincmd w | call UpdateCommandList()
+" Function for opening command window {
+function! OpenCommandList()
+    vertical split CommandList
+    vertical resize 20
+    setlocal nonumber
+    setlocal nocursorcolumn
+    setlocal nocursorline
+    wincmd w
+    call UpdateCommandList()
+endfunction
+" }
 
-" Close the help buffer if it is the last open
-autocmd WinEnter * if bufname('%') ==# 'CommandList' && winnr('$') == 1 | q! | endif 
+" Function for closing the help window {
+function! CloseHelp()
+
+    if bufwinnr('CommandList') != -1 
+        if tabpagewinnr(tabpagenr()) == 2
+            if tabpagenr('$') == 1
+                qall!
+            else
+                tabclose
+            endif
+        endif
+    endif
+
+endfunction
+" }
+
+" Open a new Command list if a new tab is opened
+autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
+
+" Open a new Command list when the program starts
+autocmd VimEnter * call OpenCommandList()
+
+" Close the help buffer if needed
+autocmd WinClosed * call CloseHelp()
+
+" } 
+
+
+" Autocomplete Pairs {
 
 " }
-   
-
 
 
 
