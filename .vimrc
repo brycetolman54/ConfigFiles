@@ -1,31 +1,35 @@
-" Opening Notes {
+" Opening Notes {-
    "   
 "   This is the personal .vimrc file for Bryce Tolman.
 "   It's not amazing, but it's there.
 "   Enjoy it
 "
-" }
+" -}
 
 
-" Folding Sections {
+" Folding Sections {-
 
 set foldenable
 set foldmethod=marker
-set foldmarker={,}
+if expand('%:p') =~# 'vimrc$'
+    set foldmarker={-,-}
+else
+    set foldmarker={,}
+endif
 set foldminlines=2
 set foldcolumn=0
 
-"}
-   
+"-}
 
-" Map Leader Commands {
+
+" Map Leader Commands {-
 
 " Set the leader to do my own commands
 let mapleader=","
 
 " Open/Close Brackets
-inoremap <leader>zc <Esc>zc
-inoremap <leader>zo <Esc>zo   
+inoremap <expr> <leader>zc "\<Esc>zc\<Up>i\<Down>"
+inoremap <expr> <leader>zo "\<Esc>zo\<Up>i\<Down>"   
 
 " Moving in file operations
 inoremap <leader>7 <Esc>$
@@ -46,45 +50,36 @@ inoremap <leader>p <Esc>p
 inoremap <leader>d <Esc>d
 inoremap <leader>u <Esc>u
 
-"}
+"-}
 
-
-" Custom Commands {
+   
+" Custom Commands {-
 
 " Makes my sourcing commands
 command Q q!
 command W wq
 
-" }
+" -}
 
 
-" Lets the cursor stay at the end of the line when in normal mode
-set virtualedit+=onemore
+set virtualedit+=onemore " allow cursor to stay at line end
 
+syntax on " makes syntax highlighting work
 
-" Makes the highlighting awesome
-syntax on
+set number " adds numbers to lines on left hand side
 
-" Add numbers to each line on the left-hand side
-set number
+set cursorline " adds a line under the current row
 
-" Highlights the row the cursor is on with a line underneath
-set cursorline
+set cursorcolumn " highlights the current cursor column
 
-" Highlights the cursor line underneath the cursor vertically
-set cursorcolumn 
-
-" Sets the shift width to 4 spaces
-set shiftwidth=4
-
-" Sets the tab width to 4 columns
-set tabstop=4
-
-" Makes it so backspacing a tab gets rid of all the spaces
-set softtabstop=4
-
-" Uses space characters instead of tabs so it's not one block
-set expandtab 
+" Indentation {-
+set shiftwidth=4 " makes auto indents 4 spaces
+set tabstop=4 " makes tab 4 spaces long
+set softtabstop=4 " deletes all tab spaces at once
+set expandtab " makes tab actually spaces
+filetype indent on " Sets indent rules based on filetype
+set smartindent " Enables auto indent based on context
+" -}
 
 " Does not save backup files
 set nobackup
@@ -92,7 +87,9 @@ set nobackup
 " Does not let the cursor scroll more than N lines when scrolling
 set scrolloff=8
 
-" Line Wrapping {
+" Line Wrapping {-
+
+set whichwrap+=<,>,h,l,[,] " Allows move by line wrapping
 
 " Function to set wrap based on window width
 function! SetWrap()
@@ -109,7 +106,7 @@ autocmd VimEnter * call SetWrap()
 " Set wrap upon resizing
 autocmd VimResized * call SetWrap()
 
-"}
+"-}
 
 " Highlight the characters that match with the one you are searching for as you type
 set incsearch
@@ -147,11 +144,8 @@ set wildmode=list:longest
 
 set mouse=a " Allows mouse movement and clicking
 set encoding=utf-8 " Sets the UTF encoding to 8
-set whichwrap+=<,>,h,l,[,] " Allows move by line wrapping
-filetype indent on " Sets indent rules based on filetype
-set smartindent " Enables auto indent based on context
 
-" Vim Run Configuration {
+" Vim Run Configuration {-
 " Ignore certain file types for vim
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
@@ -159,12 +153,12 @@ set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python311.dll  
 set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/ 
 
-"}
+"-}
 
 
-" Command List Window {
+" Command List Window {-
 
-" Function to show the command list {
+" Function to show the command list {-
 function! UpdateCommandList()
 
     let command_list = [
@@ -185,9 +179,9 @@ function! UpdateCommandList()
     " Insert new content
     call setbufline('CommandList', 1, command_list)
 endfunction
-" }
+" -}
 
-" Function for opening command window {
+" Function for opening command window {-
 function! OpenCommandList()
     vertical split CommandList
     vertical resize 20
@@ -197,10 +191,10 @@ function! OpenCommandList()
     wincmd w
     call UpdateCommandList()
 endfunction
-" }
+" -}
 
-" Function for closing the help window {
-function! CloseHelp()
+" Function to autoclose the help window {-
+function! CloseHelpAuto()
 
     if bufwinnr('CommandList') != -1 
         if tabpagewinnr(tabpagenr()) == 2
@@ -213,7 +207,18 @@ function! CloseHelp()
     endif
 
 endfunction
-" }
+" -}
+
+" Function to close the help window manually {-
+function! CloseHelpManual()
+    echo "hey there"
+endfunction
+" -}
+
+" Map command to close the help menu
+command CH call CloseHelpManual()
+inoremap <leader>ch <Esc>:CH<Return>
+
 
 " Open a new Command list if a new tab is opened
 autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
@@ -222,22 +227,30 @@ autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
 autocmd VimEnter * call OpenCommandList()
 
 " Close the help buffer if needed
-autocmd WinClosed * call CloseHelp()
+autocmd WinClosed * call CloseHelpAuto()
 
-" } 
-
-
-" Autocomplete Pairs {
-
-" }
+" -} 
 
 
+" Autocomplete Pairs {-
 
+inoremap { {}<Left>
+inoremap <expr> } getline('.')[col('.') - 1] =~# '}' ? "\<Right>" : "}"
 
+inoremap [ []<Left>
+inoremap <expr> ] getline('.')[col('.') - 1] =~# ']' ? "\<Right>" : "]"
 
+inoremap ( ()<Left>
+inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
 
+inoremap < <><Left>
+inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 
+inoremap " ""<Left>
+"inoremap <expr> " getline('.')[col('.') - 1] =~# '\"' ? "\<Right>" : "\""
 
+inoremap ' ''<Left>
+"inoremap <expr> ' getline('.')[col('.') - 1] =~# '\'' ? "\<Right>" : "\'"
 
-
+" -}
 
