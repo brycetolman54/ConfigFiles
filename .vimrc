@@ -62,15 +62,17 @@ command W wq
 " -}
 
 
+" Navigaition and Visual Properties {-
+
 set virtualedit+=onemore " allow cursor to stay at line end
-
 syntax on " makes syntax highlighting work
+set number " adds numbers on the left side of the screen
+set cursorline " adds a white line under the cursor's line
+set cursorcolumn " highlights the cursor's column
+set mouse=a " Allows mouse movement and clicking
 
-set number " adds numbers to lines on left hand side
+" -}"
 
-set cursorline " adds a line under the current row
-
-set cursorcolumn " highlights the current cursor column
 
 " Indentation {-
 set shiftwidth=4 " makes auto indents 4 spaces
@@ -81,11 +83,6 @@ filetype indent on " Sets indent rules based on filetype
 set smartindent " Enables auto indent based on context
 " -}
 
-" Does not save backup files
-set nobackup
-
-" Does not let the cursor scroll more than N lines when scrolling
-set scrolloff=8
 
 " Line Wrapping {-
 
@@ -108,44 +105,35 @@ autocmd VimResized * call SetWrap()
 
 "-}
 
-" Highlight the characters that match with the one you are searching for as you type
-set incsearch
+ 
+"Searching {-
 
-" Ignore capital letters during search
-set ignorecase
+set incsearch " highlights matching characters as you search
+set ignorecase " searches capitals even if you don't type them
+set smartcase " if you type capitals, it matches case
+set showmatch " show the matching brackets and parentheses and such
+set nohlsearch " does not persist in highlighting the previous search
 
-" Makes the line and column number show in the status line
-set ruler
-
-" Override previous if you include a capital in your search
-set smartcase
-
-" show the partial command you type in the last line of the screen
-set showcmd
-
-" Show the mode you are on on the last line
-set showmode " 
-
-" Show matching words during a search
-set showmatch
-
-" Use highlighting when doing a search
-set hlsearch
-
-" Set the commands to save in history default
-set history=10000
-
-" Enables auto completion menu after pressing TAB
-set wildmenu
-
-" Make wildmenu behave like similar to Bash completion
-set wildmode=list:longest
+"-}"
 
 
-set mouse=a " Allows mouse movement and clicking
+" Status Bar and Command Line {-
+
+set history=1000 " let the command history be large
+set wildmode=list:longest " shows multiple options for autocompelte
+set wildmenu " enables autocompletion of commands with TAB
+set showmode " shows the mode you are in on the command line
+set showcmd " shows partial commands at the bottom right
+set ruler " show line and column number in the status bar
+
+" -}"
+
+
+" Run Configuration {-
+
 set encoding=utf-8 " Sets the UTF encoding to 8
+set nobackup " doesn't save backup files
 
-" Vim Run Configuration {-
 " Ignore certain file types for vim
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
@@ -247,10 +235,8 @@ inoremap < <><Left>
 inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 
 inoremap " ""<Left>
-"inoremap <expr> " getline('.')[col('.') - 1] =~# '\"' ? "\<Right>" : "\""
 
 inoremap ' ''<Left>
-"inoremap <expr> ' getline('.')[col('.') - 1] =~# '\'' ? "\<Right>" : "\'"
 
 " -}
 
