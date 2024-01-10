@@ -1,5 +1,16 @@
+
 " Opening Notes {-
-   "   
+" 
+"
+"   _________________________.___._________ ___________
+"   \______   \______   \__  |   |\_   ___ \\_   _____/
+"    |    |  _/|       _//   |   |/    \  \/ |    __)_ 
+"    |    |   \|    |   \\____   |\     \____|        \
+"    |______  /|____|_  // ______| \______  /_______  /
+"           \/        \/ \/               \/        \/ 
+""
+"
+"
 "   This is the personal .vimrc file for Bryce Tolman.
 "   It's not amazing, but it's there.
 "   Enjoy it
@@ -234,9 +245,9 @@ inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
 inoremap < <><Left>
 inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 
-inoremap " ""<Left>
+inoremap <expr> " getline('.')[col('.') - 1] =~# '"' ? "\<Right>" : "\"\""
 
-inoremap ' ''<Left>
+inoremap <expr> ' getline('.')[col('.') - 1] =~# '''' ? "\<Right>" : "''"
 
 " -}
 
