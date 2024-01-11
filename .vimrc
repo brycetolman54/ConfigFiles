@@ -61,6 +61,10 @@ inoremap <leader>p <Esc>p
 inoremap <leader>d <Esc>d
 inoremap <leader>u <Esc>u
 
+" Toggle Help Window
+inoremap <leader>ch <Esc>:CH<Return>i
+inoremap <leader>oh <Esc>:OH<Return>i
+
 "-}
 
    
@@ -69,6 +73,10 @@ inoremap <leader>u <Esc>u
 " Makes my sourcing commands
 command Q q!
 command W wq
+
+" Resize Help Window to Close/Open
+command CH wincmd h | wincmd h | wincmd h | vertical resize 0 | wincmd l 
+command OH wincmd h | wincmd h | wincmd h | vertical resize 20 | wincmd l
 
 " -}
 
@@ -208,17 +216,6 @@ function! CloseHelpAuto()
 endfunction
 " -}
 
-" Function to close the help window manually {-
-function! CloseHelpManual()
-    echo "hey there"
-endfunction
-" -}
-
-" Map command to close the help menu
-command CH call CloseHelpManual()
-inoremap <leader>ch <Esc>:CH<Return>
-
-
 " Open a new Command list if a new tab is opened
 autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
 
@@ -248,6 +245,8 @@ inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 inoremap <expr> " getline('.')[col('.') - 1] =~# '"' ? "\<Right>" : "\"\"\<Left>"
 
 inoremap <expr> ' getline('.')[col('.') - 1] =~# '''' ? "\<Right>" : "''\<Left>"
+
+inoremap <expr> ` getline('.')[col('.') - 1] =~# '`' ? "\<Right>" : "``\<Left>"
 
 " -}
 
