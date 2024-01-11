@@ -3,7 +3,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # allows me to go to my coding class
-alias cs240='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240'
+alias cs='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Winter/CS312'
 
 # allows me to go to my dailydose code quickly
 alias dd='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Spring-Summer/CS260/dailydose'
@@ -15,7 +15,7 @@ alias idea='~/../../../c/Users/bat20/AppData/Local/JetBrains/Toolbox/scripts/ide
 alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University'
 
 # allows me to run python programs with winpty
-alias python='winpty python3.exe'
+alias pysh='winpty python3.exe'
 
 # allows acces to chatGPT
 export OPENAI_API_KEY="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"
@@ -199,3 +199,18 @@ bind '"\\":self-insert'
 
 # shortcut to run go build
 alias gb='go build'
+function gbt {
+    gp here
+    tds
+    gb
+    cd "$here"
+}
+
+# see all hidden files in the folder
+function hid {
+    if [ -z $1 ]; then
+        ls -a | grep ^'\.'
+    else
+        ls -a $1 | grep ^'\.'  
+    fi
+}

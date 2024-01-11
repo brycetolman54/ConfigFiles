@@ -245,9 +245,9 @@ inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
 inoremap < <><Left>
 inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 
-inoremap <expr> " getline('.')[col('.') - 1] =~# '"' ? "\<Right>" : "\"\""
+inoremap <expr> " getline('.')[col('.') - 1] =~# '"' ? "\<Right>" : "\"\"\<Left>"
 
-inoremap <expr> ' getline('.')[col('.') - 1] =~# '''' ? "\<Right>" : "''"
+inoremap <expr> ' getline('.')[col('.') - 1] =~# '''' ? "\<Right>" : "''\<Left>"
 
 " -}
 
