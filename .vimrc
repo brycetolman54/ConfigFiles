@@ -43,10 +43,11 @@ inoremap <expr> <leader>zc "\<Esc>zc\<Up>i\<Down>"
 inoremap <expr> <leader>zo "\<Esc>zo\<Up>i\<Down>"   
 
 " Moving in file operations
-inoremap <leader>7 <Esc>$
-inoremap <leader>0 <Esc>0
+inoremap <leader>7 <Esc>$i<Right>
+inoremap <leader>0 <Esc>0i
 inoremap <leader>g <Esc>G
 inoremap <leader>gg <Esc>gg
+
 
 " File Operations
 inoremap <leader><leader> <Esc>
