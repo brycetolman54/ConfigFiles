@@ -62,11 +62,17 @@ inoremap <leader>y <Esc>yi<Right>
 inoremap <leader>p <Esc>pi<Right>
 inoremap <leader>d <Esc>di<Right>
 inoremap <leader>u <Esc>ui<Right>
+inoremap <leader>dd <Esc>ddi
 
 
 " Toggle Help Window
 inoremap <leader>ch <Esc>:CH<Return>i
 inoremap <leader>oh <Esc>:OH<Return>i
+
+" Markdown Tools
+inoremap <leader>ct <Esc>:CT<Return>
+inoremap <leader>al <Esc>:AL<Return>i
+inoremap <leader>dl <Esc>:DL<Return>i
 
 "}-
 
@@ -116,6 +122,10 @@ function! ToggleHelp(command)
 endfunction
 "}-
 
+" Markdown Tools commands
+command -nargs=* CT call CreateTable(<f-args>)
+command AL call AddLine()
+command DL call DeleteLine()
 " }-
 
 
@@ -145,8 +155,19 @@ function! BracketIndent()
     " see if the characters are { and }
     if getline(line('.'))[col('.') - 2] ==# '{' && getline('.')[col('.') - 1] ==# '}'
 
-        " do two returns, move up a line, and indent
-        return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", col('$') / 4)
+        " find out how many tabs to do
+        let chars = getline('.')
+        let num = 0
+        while 1
+            if chars[num] ==# ' '
+                let num += 1
+            else
+                break
+            endif
+        endwhile
+
+        " do two returns, move up a line, and indent       
+        return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", num / 4 + 1)
             
     endif 
 
@@ -211,7 +232,6 @@ set ruler " show line and column number in the status bar
 " Run Configuration -{
 
 set modeline " allows modeline options for files
-set noequalalways " makes it so windows don't resize to be equal after closing one
 
 set encoding=utf-8 " Sets the UTF encoding to 8
 set nobackup " doesn't save backup files
@@ -255,6 +275,7 @@ endfunction
 function! OpenCommandList()
     vertical split CommandList
     vertical resize 20
+    setlocal winfixwidth
     setlocal nonumber
     setlocal nocursorcolumn
     setlocal nocursorline
@@ -290,6 +311,8 @@ autocmd WinClosed * call CloseHelpAuto()
 
 " }- 
 
+
+" Coding Tools -{ 
 
 " Autocomplete Pairs -{
 
@@ -373,15 +396,91 @@ inoremap <expr> <BS> DeletePair()
 
 " }-
 
+" Auto Comment -{
+
+" }-
+
+" }-
+
 
 " Markdown Tools -{
+   
+" Function to create Tables -{
+
+function! CreateTable(...)
+
+    " make sure the number of args is right
+    if len(a:000) > 2
+        echo "That is too many arguments"
+        return
+    elseif len(a:000) == 2
+        let rows = a:1
+        let cols = a:2
+    elseif len(a:000) == 0
+        let rows = input("Rows: ")
+        let cols = input("Cols: ")
+    else
+        echo "That is not the right amount of arguments"
+        return
+    endif
+
+    " Start making the table
+    let oneRow = "|" . repeat("       |", cols)
+    let header = "|" . repeat(" :---: |", cols)
+
+    " print the table out with a new line before and after
+    call append(line('.'), oneRow)
+    call append(line('.') + 1, header)
+    for i in range(1, rows)
+        call append(line('.') + 1 + i, oneRow)
+    endfor
     
-" Function to create Tables -{}-
     
+endfunction
+
+" }-
+
+" Function to add lines -{ 
+
+function! AddLine()
+
+    " get the current line number
+    let curLine = line('.')
+
+    " get all ready for the substitution
+    let pattern = '[^[:space:]|]'
+    let replacement = ' '
+
+    " add the new line with empty cells
+    call append(curLine, substitute(getline(curLine), pattern, replacement, 'g'))
+
+endfunction
+
+" }-"
+
+" Function to delete lines -{
+
+function! DeleteLine()
+
+    " delete the line
+    normal! dd
+
+endfunction
 
 " }-
 
 
 
+" }-
+
+
+
+
+
+
+
+
+
+
 " this is for comments in vimrc specifically
-inoremap -{ -{}-<Left><Left> 
+inoremap <expr> -{ "-{}-<Left><Left>" 
