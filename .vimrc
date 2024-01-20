@@ -73,14 +73,16 @@ set foldcolumn=0
 let mapleader=";"
 
 " Open/Close Brackets
-inoremap <leader>zc <Esc>zc
-inoremap <leader>zo <Esc>zo   
+inoremap zc <Esc>zc
+inoremap zo <Esc>zo   
 
 " Moving in file operations
 inoremap <leader>4 <Esc>$i<Right>
 inoremap <leader>0 <Esc>0i
 inoremap <leader>g <Esc>G
 inoremap <leader>gg <Esc>gg
+inoremap <leader>b <Esc>bi
+inoremap <leader>e <Esc>ei
 
 
 " File Operations
@@ -88,6 +90,7 @@ inoremap <leader><leader> <Esc>
 inoremap <leader>q <Esc>:q!<Return>
 inoremap <leader>x <Esc>:x<Return>
 inoremap <leader>w <Esc>:w<Return>i<Right>
+inoremap <leader>s <Esc>:source<Return>
 
 " Formatting Operations
 inoremap <leader>n <Esc>o
@@ -115,8 +118,8 @@ inoremap <leader>ck <Esc>:CK<Return>
 " Custom Commands -{
 
 " Resize Help Window to Close/Open
-command CH call ToggleHelp('CH') | startinsert
-command OH call ToggleHelp('OH') | startinsert
+command! CH call ToggleHelp('CH') | startinsert
+command! OH call ToggleHelp('OH') | startinsert
 
 " Function to focus on Command Window and back -{
 function! ToggleHelp(command)
@@ -155,10 +158,10 @@ endfunction
 
 
 " Markdown Tools commands
-command -nargs=* CT call CreateTable(<f-args>)
-command -nargs=? AL call AddLine(<f-args>) | startinsert
-command -nargs=? DL call DeleteLine(<f-args>) | startinsert
-command CK call AddCheckBox() | startinsert
+command! -nargs=* CT call CreateTable(<f-args>)
+command! -nargs=? AL call AddLine(<f-args>) | startinsert
+command! -nargs=? DL call DeleteLine(<f-args>) | startinsert
+command! CK call AddCheckBox() | startinsert
 
 " }-
 
@@ -190,7 +193,7 @@ function! BracketIndent()
     if getline(line('.'))[col('.') - 2] ==# '{' && getline('.')[col('.') - 1] ==# '}'
 
         " do two returns, move up a line, and indent       
-        let [num, char] = SpacesAndFirstChar()
+        let [num, char] = SpacesAndFirstChar('.')
         return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", num / 4 + 1)
             
     endif 
@@ -593,7 +596,7 @@ endfunction
 function! AddCheckBox()
         
     " get the number of tabs needed
-    let [num, char] = SpacesAndFirstChar()
+    let [num, char] = SpacesAndFirstChar('.')
     let tabs = num / 4
 
     " return the CheckBox
@@ -607,24 +610,63 @@ endfunction
 
 " Function to make lists -{
 
-function! ListIndent()
+function! ListIndent(option)   
 
     " get the num of spaces and the first character
-    let [num, char] = SpacesAndFirstChar(option)
+    let [num, char] = SpacesAndFirstChar('.')
 
     " see if it is the right first char
     if char ==# '-'
-        echo "hello"
-        return
+
+        " if we don't have anything but the -
+        if getline('.') =~ '^\s*-[ ]$'
+                    
+            " if we are pressing enter
+            if a:option =~# "\<CR>"
+
+                " if we are at the beginning of the row
+                if col('.') < 4
+
+                    return repeat("\<BS>", col('.') - 1)
+                    
+                else
+                    
+                    return repeat("\<BS>", col('.') - 1) . repeat("\<Tab>", (num / 4) - 1) . "- "
+
+                endif
+
+            elseif a:option =~# "\<Tab>"
+
+                return repeat("\<BS>", col('.') - 1) . repeat("\<Tab>", (num / 4) + 1) . "- "
+
+            endif
+
+        else
+
+            " if we are pressing enter
+            if a:option =~# "\<CR>"
+                
+                return "\<CR>" . repeat("\<Tab>", num / 4) . "- "
+
+            else
+
+                return "\<Tab>"
+
+            endif
+
+        endif
+
     else
+
         return a:option
+
     endif
 
 endfunction
 
 " call the function when you hit enter or tab
-"inoremap <expr> <CR> ListIndent("\<CR>")
-"inoremap <expr> <Tab> ListIndent("\<Tab>")
+inoremap <expr> <CR> ListIndent("\<CR>")
+inoremap <expr> <Tab> ListIndent("\<Tab>")
 
 " }-
 
@@ -635,10 +677,10 @@ endfunction
 
 " Get # spaces at beginning of line and first non space character -{
 
-function! SpacesAndFirstChar()
+function! SpacesAndFirstChar(ln)
 
     " find out how many tabs to do
-    let chars = getline('.')
+    let chars = getline(a:ln)
     let num = 0
     let char = ''
     while 1
@@ -672,4 +714,4 @@ endfunction
 
 
 " this is for comments in vimrc specifically
-inoremap <expr> -{ "-{}-<Left><Left>" 
+inoremap <expr> -{ "-{}-<Left><Left>"
