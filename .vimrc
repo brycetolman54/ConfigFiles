@@ -90,7 +90,7 @@ inoremap <leader>x <Esc>:x<Return>
 inoremap <leader>w <Esc>:w<Return>i<Right>
 
 " Formatting Operations
-inoremap <leader>o <Esc>o
+inoremap <leader>n <Esc>o
 inoremap <leader>r <Esc><C-r>
 inoremap <leader>y <Esc>yi<Right>
 inoremap <leader>p <Esc>pi<Right>
@@ -108,7 +108,6 @@ inoremap <leader>ct <Esc>:CT<Return>
 inoremap <leader>al <Esc>:AL<Return>
 inoremap <leader>dl <Esc>:DL<Return>
 inoremap <leader>ck <Esc>:CK<Return>
-
 
 "}-
 
@@ -191,7 +190,7 @@ function! BracketIndent()
     if getline(line('.'))[col('.') - 2] ==# '{' && getline('.')[col('.') - 1] ==# '}'
 
         " do two returns, move up a line, and indent       
-        let num = BeginSpaces()
+        let [num, char] = SpacesAndFirstChar()
         return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", num / 4 + 1)
             
     endif 
@@ -256,7 +255,7 @@ set ruler " show line and column number in the status bar
 
 " Run Configuration -{
 
-set viminfo+=n'100 " set up to save marks in the file
+set viminfo+=n.vimmarks " set up to save marks in the file
 set omnifunc=syntaxcomplete#Complete
 set completeopt+=menuone,noselect
 set modeline " allows modeline options for files
@@ -293,6 +292,10 @@ function! UpdateCommandList()
         \ "Paste: p",
         \ "Cut: d",
         \ "Delete line: dd",
+        \ "Add a mark: m<char>",
+        \ "Go to mark: `<char>",
+        \ "Start of word: b",
+        \ "End of word: e",
         \ ]
 
     " Insert new content
@@ -369,7 +372,7 @@ function! CheckAdd(char)
 
     else
         " check to see if one is an alphanum
-        if afterChar =~# '[[:alnum:]]' || beforeChar =~# '[[:alnum:]]'
+        if afterChar =~# '[[:alnum:]\|<\|[\|{\|(]' || beforeChar =~# '[[:alnum:]\|?\|\.\|,\|>\|]\|}\|)\|!\|:]' 
             return a:char
     
         else
@@ -447,8 +450,6 @@ function! CreateTable(...)
     let header = "|"
     let top = "|"
     let labels = []
-
-    functi
 
     " get the args for the table details
     if len(a:000) > 2
@@ -592,7 +593,8 @@ endfunction
 function! AddCheckBox()
         
     " get the number of tabs needed
-    let tabs = BeginSpaces() / 4
+    let [num, char] = SpacesAndFirstChar()
+    let tabs = num / 4
 
     " return the CheckBox
     call append(line('.') - 1, repeat("\<Tab>", tabs) . '- [ ] ')
@@ -603,27 +605,52 @@ endfunction
 
 " }-
 
+" Function to make lists -{
+
+function! ListIndent()
+
+    " get the num of spaces and the first character
+    let [num, char] = SpacesAndFirstChar(option)
+
+    " see if it is the right first char
+    if char ==# '-'
+        echo "hello"
+        return
+    else
+        return a:option
+    endif
+
+endfunction
+
+" call the function when you hit enter or tab
+"inoremap <expr> <CR> ListIndent("\<CR>")
+"inoremap <expr> <Tab> ListIndent("\<Tab>")
+
+" }-
+
 " }-
 
 
 " Helper Functions -{
 
-" Find the Number of spaces at the beginning of the line -{
+" Get # spaces at beginning of line and first non space character -{
 
-function! BeginSpaces()
+function! SpacesAndFirstChar()
 
     " find out how many tabs to do
     let chars = getline('.')
     let num = 0
+    let char = ''
     while 1
         if chars[num] ==# ' '
             let num += 1
         else
+            let char = chars[num]
             break
         endif
     endwhile
 
-    return num
+    return [num, char]
 
 endfunction
 
@@ -633,7 +660,12 @@ endfunction
 
 
 
+
+
+
+
 " Sand Box {
+
 
 
 " }
