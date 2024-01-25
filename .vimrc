@@ -122,573 +122,579 @@ inoremap zR <Esc>zR
 " Other keys
 inoremap <expr> <CR> CRFxn()
 inoremap <expr> <Tab> ListIndent("\<Tab>")
+inoremap <expr> <BS> BSFxn()
 
-" }-
-
-
-" Custom Commands -{
-
-" Resize Help Window to Close/Open
-command! CH call ToggleHelp('CH') | startinsert
-command! OH call ToggleHelp('OH') | startinsert
-
-" Function to focus on Command Window and back -{
-function! ToggleHelp(command)
-    
-    " get the current buffer that is in focus
-    let curBuf = bufnr('%')
-    let curWin = bufwinnr(curBuf)
-
-    " find the buffer for the help window
-    let helpBuf = bufnr('CommandList')
-    let helpWin = bufwinnr(helpBuf)
-
-    " make sure the help buffer is open
-    if helpWin != -1
-        execute helpWin . "wincmd w"
-    else
-        echo "The help window is not open in this tab"
-        return
-    endif
-
-    " execute the command
-    if a:command ==# 'CH'
-        vertical resize 0
-    elseif a:command ==# 'OH'
-        vertical resize 20
-    else
-        echo "That is not an appropriate command"
-        return
-    endif
-
-    " return to the previous window
-    execute curWin . "wincmd w"
-
-endfunction
-"}-
+    " }-
 
 
-" Markdown Tools commands
-command! -nargs=* CT call CreateTable(<f-args>)
-command! -nargs=? AL call AddLine(<f-args>) | startinsert
-command! -nargs=? DL call DeleteLine(<f-args>) | startinsert
-command! CK call AddCheckBox() | startinsert
+    " Custom Commands -{
 
-" }-
+    " Resize Help Window to Close/Open
+    command! CH call ToggleHelp('CH') | startinsert
+    command! OH call ToggleHelp('OH') | startinsert
 
-
-" Navigaition and Visual Properties -{
-
-set virtualedit+=onemore " allow cursor to stay at line end
-syntax on " makes syntax highlighting work
-set number " adds numbers on the left side of the screen
-set cursorline " adds a white line under the cursor's line
-set cursorcolumn " highlights the cursor's column
-set mouse=a " Allows mouse movement and clicking
-
-" }-"
-
-
-" Indentation -{
-set shiftwidth=4 " makes auto indents 4 spaces
-set tabstop=4 " makes tab 4 spaces long
-set softtabstop=4 " deletes all tab spaces at once
-set expandtab " makes tab actually spaces
-filetype indent on " Sets indent rules based on filetype
-set smartindent " Enables auto indent based on context
-
-" Function to set up brackets for a function -{
-function! BracketIndent()
+    " Function to focus on Command Window and back -{
+    function! ToggleHelp(command)
         
-    " see if the characters are { and }
-    if getline(line('.'))[col('.') - 2] ==# '{' && getline('.')[col('.') - 1] ==# '}'
+        " get the current buffer that is in focus
+        let curBuf = bufnr('%')
+        let curWin = bufwinnr(curBuf)
 
-        " do two returns, move up a line, and indent       
-        let [num, char] = SpacesAndFirstChar('.')
-        return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", num / 4 + 1)
+        " find the buffer for the help window
+        let helpBuf = bufnr('CommandList')
+        let helpWin = bufwinnr(helpBuf)
+
+        " make sure the help buffer is open
+        if helpWin != -1
+            execute helpWin . "wincmd w"
+        else
+            echo "The help window is not open in this tab"
+            return
+        endif
+
+        " execute the command
+        if a:command ==# 'CH'
+            vertical resize 0
+        elseif a:command ==# 'OH'
+            vertical resize 20
+        else
+            echo "That is not an appropriate command"
+            return
+        endif
+
+        " return to the previous window
+        execute curWin . "wincmd w"
+
+    endfunction
+    "}-
+
+
+    " Markdown Tools commands
+    command! -nargs=* CT call CreateTable(<f-args>)
+    command! -nargs=? AL call AddLine(<f-args>) | startinsert
+    command! -nargs=? DL call DeleteLine(<f-args>) | startinsert
+    command! CK call AddCheckBox() | startinsert
+
+    " }-
+
+
+    " Navigaition and Visual Properties -{
+
+    set virtualedit+=onemore " allow cursor to stay at line end
+    syntax on " makes syntax highlighting work
+    set number " adds numbers on the left side of the screen
+    set cursorline " adds a white line under the cursor's line
+    set cursorcolumn " highlights the cursor's column
+    set mouse=a " Allows mouse movement and clicking
+
+    " }-"
+
+
+    " Indentation -{
+    set shiftwidth=4 " makes auto indents 4 spaces
+    set tabstop=4 " makes tab 4 spaces long
+    set softtabstop=4 " make it so delete all 4 tab spaces at once
+    set expandtab " makes tab actually spaces
+    filetype indent on " Sets indent rules based on filetype
+    set smartindent " Enables auto indent based on context
+
+    " Function to set up brackets for a function -{
+    function! BracketIndent()
             
-    endif 
+        " see if the characters are { and }
+        if getline(line('.'))[col('.') - 2] ==# '{' && getline('.')[col('.') - 1] ==# '}'
 
-    " return just the <CR> else
-    return "return"
-    
-endfunction
+            " do two returns, move up a line, and indent       
+            let [num, char] = SpacesAndFirstChar('.')
+            return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", num / 4 + 1)
+                
+        endif 
 
-" }-
+        " return just the <CR> else
+        return "return"
+        
+    endfunction
 
-" }-
+    " }-
 
-
-" Line Wrapping -{
-
-set whichwrap+=<,>,h,l,[,] " Allows move by line wrapping
-
-" Function to set wrap based on window width
-function! SetWrap()
-    if winwidth(0) <= 85
-        set wrap
-    else
-        set nowrap
-    endif
-endfunction
-
-" Set Wrap when vim starts
-autocmd VimEnter * call SetWrap() 
-
-" Set wrap upon resizing
-autocmd VimResized * call SetWrap()
-
-"}-
-
- 
-"Searching -{
-
-set incsearch " highlights matching characters as you search
-set ignorecase " searches capitals even if you don't type them
-set smartcase " if you type capitals, it matches case
-set showmatch " show the matching brackets and parentheses and such
-set nohlsearch " does not persist in highlighting the previous search
-
-"}-"
+    " }-
 
 
-" Status Bar and Command Line -{
+    " Line Wrapping -{
 
-set history=1000 " let the command history be large
-set wildmode=list:longest " shows multiple options for autocompelte
-set wildmenu " enables autocompletion of commands with TAB
-set showmode " shows the mode you are in on the command line
-set showcmd " shows partial commands at the bottom right
-set ruler " show line and column number in the status bar
+    set whichwrap+=<,>,h,l,[,] " Allows move by line wrapping
 
-" }-"
+    " Function to set wrap based on window width
+    function! SetWrap()
+        if winwidth(0) <= 85
+            set wrap
+        else
+            set nowrap
+        endif
+    endfunction
 
+    " Set Wrap when vim starts
+    autocmd VimEnter * call SetWrap() 
 
-" Run Configuration -{
+    " Set wrap upon resizing
+    autocmd VimResized * call SetWrap()
 
-set omnifunc=syntaxcomplete#Complete
-set completeopt+=menuone,noselect
-set modeline " allows modeline options for files
+    "}-
 
-set encoding=utf-8 " Sets the UTF encoding to 8
-set nobackup " doesn't save backup files
+     
+    "Searching -{
 
-" Ignore certain file types for vim
-set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+    set incsearch " highlights matching characters as you search
+    set ignorecase " searches capitals even if you don't type them
+    set smartcase " if you type capitals, it matches case
+    set showmatch " show the matching brackets and parentheses and such
+    set nohlsearch " does not persist in highlighting the previous search
 
-" Sets up the path to python for Vim plugins
-set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python311.dll  
-set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/ 
-
-"}-
-
-
-" Popup Menu Configuration -{
-
-" }-"
+    "}-"
 
 
-" Command List Window -{
+    " Status Bar and Command Line -{
 
-" Function to show the command list -{
-function! UpdateCommandList()
+    set history=1000 " let the command history be large
+    set wildmode=list:longest " shows multiple options for autocompelte
+    set wildmenu " enables autocompletion of commands with TAB
+    set showmode " shows the mode you are in on the command line
+    set showcmd " shows partial commands at the bottom right
+    set ruler " show line and column number in the status bar
 
-    let command_list = [
-        \ "    Vim Commands    ",
-        \ "--------------------",
-        \ "Open File: :e file",
-        \ "Undo: u",
-        \ "Redo: Ctrl+r",
-        \ "Search: /pattern",
-        \ "Start of Line: 0",
-        \ "End of Line: $",
-        \ "Move to line n: nG",
-        \ "Copy: y",
-        \ "Paste: p",
-        \ "Cut: d",
-        \ "Delete line: dd",
-        \ "Add a mark: m<char>",
-        \ "Go to mark: `<char>",
-        \ "Start of word: b",
-        \ "End of word: e",
-        \ ]
+    " }-"
 
-    " Insert new content
-    call setbufline('CommandList', 1, command_list)
-endfunction
-" }-
 
-" Function for opening command window -{
-function! OpenCommandList()
-    vertical split CommandList
-    vertical resize 20
-    setlocal winfixwidth
-    setlocal nonumber
-    setlocal nocursorcolumn
-    setlocal nocursorline
-    wincmd w
-    call UpdateCommandList()
-endfunction
-" }-
+    " Run Configuration -{
 
-" Function to autoclose the help window -{
-function! CloseHelpAuto()
+    set omnifunc=syntaxcomplete#Complete
+    set completeopt+=menuone,noselect
+    set modeline " allows modeline options for files
 
-    if bufwinnr('CommandList') != -1 
-        if tabpagewinnr(tabpagenr()) == 2
-            if tabpagenr('$') == 1
-                qall!
-            else
-                tabclose
+    set encoding=utf-8 " Sets the UTF encoding to 8
+    set nobackup " doesn't save backup files
+
+    " Ignore certain file types for vim
+    set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+
+    " Sets up the path to python for Vim plugins
+    set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python311.dll  
+    set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/ 
+
+    "}-
+
+
+    " Popup Menu Configuration -{
+
+    " }-"
+
+
+    " Command List Window -{
+
+    " Function to show the command list -{
+    function! UpdateCommandList()
+
+        let command_list = [
+            \ "    Vim Commands    ",
+            \ "--------------------",
+            \ "Open File: :e file",
+            \ "Undo: u",
+            \ "Redo: Ctrl+r",
+            \ "Search: /pattern",
+            \ "Start of Line: 0",
+            \ "End of Line: $",
+            \ "Move to line n: nG",
+            \ "Copy: y",
+            \ "Paste: p",
+            \ "Cut: d",
+            \ "Delete line: dd",
+            \ "Add a mark: m<char>",
+            \ "Go to mark: `<char>",
+            \ "Start of word: b",
+            \ "End of word: e",
+            \ ]
+
+        " Insert new content
+        call setbufline('CommandList', 1, command_list)
+    endfunction
+    " }-
+
+    " Function for opening command window -{
+    function! OpenCommandList()
+        vertical split CommandList
+        vertical resize 20
+        setlocal winfixwidth
+        setlocal nonumber
+        setlocal nocursorcolumn
+        setlocal nocursorline
+        wincmd w
+        call UpdateCommandList()
+    endfunction
+    " }-
+
+    " Function to autoclose the help window -{
+    function! CloseHelpAuto()
+
+        if bufwinnr('CommandList') != -1 
+            if tabpagewinnr(tabpagenr()) == 2
+                if tabpagenr('$') == 1
+                    qall!
+                else
+                    tabclose
+                endif
             endif
         endif
-    endif
 
-endfunction
-" }-
+    endfunction
+    " }-
 
-" Open a new Command list if a new tab is opened
-autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
+    " Open a new Command list if a new tab is opened
+    autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
 
-" Open a new Command list when the program starts
-autocmd VimEnter * call OpenCommandList()
+    " Open a new Command list when the program starts
+    autocmd VimEnter * call OpenCommandList()
 
-" Close the help buffer if needed
-autocmd WinClosed * call CloseHelpAuto()
+    " Close the help buffer if needed
+    autocmd WinClosed * call CloseHelpAuto()
 
-" }- 
-
-
-" Coding Tools -{ 
-
-" Autocomplete Pairs -{
-
-" Checking for autocompletion of ", ', and ` -{
-function! CheckAdd(char1, char2)
-    " get the chars before and after the char of interest
-    let afterChar=getline('.')[col('.') - 1]
-    let beforeChar=getline('.')[col('.') - 2]
-
-    " if the char after is the same, move past it
-    if afterChar ==# a:char1
-        return "\<Right>"
-
-    else
-        " check to see if one is an alphanum
-        if afterChar =~# '[[:alnum:]\|<\|[\|{\|(]' || beforeChar =~# '[[:alnum:]\|?\|\.\|,\|>\|]\|}\|)\|!\|:]' 
-            return a:char1
-    
-        else
-            " return a concatenation of the char
-            return a:char1 . a:char2 . "\<Left>"
-
-        endif
-
-    endif
-
-endfunction
-" }-
-
-inoremap <expr> { CheckAdd('{', '}')
-inoremap <expr> } getline('.')[col('.') - 1] =~# '}' ? "\<Right>" : "}"
-
-inoremap <expr> [ CheckAdd('[', ']')
-inoremap <expr> ] getline('.')[col('.') - 1] =~# ']' ? "\<Right>" : "]"
-
-inoremap <expr> ( CheckAdd('(', ')')
-inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
-
-inoremap <expr> < CheckAdd('<', '>')
-inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
-
-inoremap <expr> " CheckAdd('"', '"')
-
-inoremap <expr> ' CheckAdd('''', '''')
-
-inoremap <expr> ` CheckAdd('`', '`')
+    " }- 
 
 
-" Function to delete second of pair -{
+    " Coding Tools -{ 
 
-function! DeletePair()
-    
-    " get the characters before and after the <BS>
-    let beforeChar = getline('.')[col('.') - 2]
-    let afterChar = getline('.')[col('.') - 1]
+    " Autocomplete Pairs -{
 
-    if(beforeChar ==# '{' && afterChar ==# '}')
-        return "\<BS>\<Del>"
-    elseif(beforeChar ==# '[' && afterChar ==# ']')
-        return "\<BS>\<Del>"
-    elseif(beforeChar ==# '(' && afterChar ==# ')')
-        return "\<BS>\<Del>"
-    elseif(beforeChar ==# '<' && afterChar ==# '>')
-        return "\<BS>\<Del>"
-    elseif(beforeChar ==# '"' && afterChar ==# '"')
-        return "\<BS>\<Del>"
-    elseif(beforeChar ==# '''' && afterChar ==# '''')
-        return "\<BS>\<Del>"
-    elseif(beforeChar ==# '`' && afterChar ==# '`')
-        return "\<BS>\<Del>"
-    else
-        return "\<BS>"
-    endif
+    " Checking for autocompletion of ", ', and ` -{
+    function! CheckAdd(char1, char2)
+        " get the chars before and after the char of interest
+        let afterChar=getline('.')[col('.') - 1]
+        let beforeChar=getline('.')[col('.') - 2]
 
-endfunction
-
-" actually mapping out the <BS>
-inoremap <expr> <BS> DeletePair()
-
-" }-
-
-" }-
-
-" Auto Comment -{
-
-" }-
-
-" Change Indentation -{
-"   
-" }-
-
-" }-
-
-
-" Markdown Tools -{
- 
-" Function to create Tables -{
-
-function! CreateTable(...)
-
-    " initialize variables
-    let oneRow = "|"
-    let header = "|"
-    let top = "|"
-    let labels = []
-
-    " get the args for the table details
-    if len(a:000) > 2
-        
-        " get the rows and cols
-        let rows = a:1
-        let cols = a:2
-
-        " get the labels
-        for i in range(1, cols)
-            let label = get(a:, i + 2, "")
-            call add(labels, label)
-        endfor
-
-    " if you only got the rows and cols
-    elseif len(a:000) == 2
-
-        " get the rows and cols
-        let rows = a:1
-        let cols = a:2
-
-        let oneRow .= repeat("       |", cols)
-        let top .= repeat("       |", cols)
-        let header .= repeat(" :---: |", cols)
-        
-
-    " if you got no args
-    elseif len(a:000) == 0
-        
-        " get the rows and cols
-        let rows = input("Rows: ")
-        let cols = input("Cols: ")
-        
-        " get all the labels
-        for i in range(1, cols)
-            let label = input("Label ". i . ": ")
-            call add(labels, label)    
-        endfor
-    
-    endif
-
-    " Start making the table
-    for label in labels
-
-        " get the length of the label
-        let length = len(label)
-
-        let one
-        " update the different rows
-        if length >= 5
-
-            let top .= " " . label . " |"
-            let header .= " :" . repeat("-", length - 2) . ": |"
-            let oneRow .= repeat(" ", length + 2) . "|"
+        " if the char after is the same, move past it
+        if afterChar ==# a:char1
+            return "\<Right>"
 
         else
-
-            " see if it's odd or even
-            if length % 2 == 0
-                
-                let top .= " " . repeat(" ", ((5 - length) / 2) + 1) . label . repeat(" ", (5-length) / 2) . " |"
-
+            " check to see if one is an alphanum
+            if afterChar =~# '[[:alnum:]\|<\|[\|{\|(]' || beforeChar =~# '[[:alnum:]\|?\|\.\|,\|>\|]\|}\|)\|!\|:]' 
+                return a:char1
+        
             else
-                
-                let top .= " " . repeat(" ", (5 - length) / 2) . label . repeat(" ", (5 - length) / 2) . " |"
+                " return a concatenation of the char
+                return a:char1 . a:char2 . "\<Left>"
 
             endif
 
-            let header .= " :---: |"
-            let oneRow .= "       |"
-
         endif
 
-    endfor
+    endfunction
+    " }-
 
-    " print the table out with a new line before and after
-    call append(line('.'), top)
-    call append(line('.') + 1, header)
-    for i in range(1, rows)
-        call append(line('.') + 1 + i, oneRow)
-    endfor
-    
-    
-endfunction
+    inoremap <expr> { CheckAdd('{', '}')
+    inoremap <expr> } getline('.')[col('.') - 1] =~# '}' ? "\<Right>" : "}"
 
-" }-
+    inoremap <expr> [ CheckAdd('[', ']')
+    inoremap <expr> ] getline('.')[col('.') - 1] =~# ']' ? "\<Right>" : "]"
 
-" Function to add lines -{ 
+    inoremap <expr> ( CheckAdd('(', ')')
+    inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
 
-function! AddLine(...)
+    inoremap <expr> < CheckAdd('<', '>')
+    inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 
-    " see if we got any args
-    if(len(a:000) != 0)
-        let end = a:1
-    else
-        let end = 1
-    endif
+    inoremap <expr> " CheckAdd('"', '"')
 
-    " get the current line number
-    let curLine = line('.')
+    inoremap <expr> ' CheckAdd('''', '''')
 
-    " get all ready for the substitution
-    let pattern = '[^[:space:]|]'
-    let replacement = ' '
+    inoremap <expr> ` CheckAdd('`', '`')
 
-    " add the new line with empty cells
-    for i in range(1,end)
-    
-        call append(curLine, substitute(getline(curLine), pattern, replacement, 'g'))
 
-    endfor
+    " Function to delete second of pair -{
 
-endfunction
-
-" }-"
-
-" Function to add columns -{
-"
-" }-"
-
-" Function to delete columns -{
-"
-" }-"
-
-" Function to delete lines -{
-
-function! DeleteLine(...)
-
-    " see if we got any args
-    if(len(a:000) != 0)
-        let end = a:1
-    else
-        let end = 1
-    endif
-
-    " delete the line
-    for i in range(1,end)
-    
-        normal! dd
-
-    endfor
-
-endfunction
-
-" }-
-
-" Function to add check boxes -{
-    
-function! AddCheckBox()
+    function! DeletePair()
         
-    " get the number of tabs needed
-    let [num, char] = SpacesAndFirstChar('.')
-    let tabs = num / 4
+        " get the characters before and after the <BS>
+        let beforeChar = getline('.')[col('.') - 2]
+        let afterChar = getline('.')[col('.') - 1]
 
-    " return the CheckBox
-    call append(line('.') - 1, repeat("\<Tab>", tabs) . '- [ ] ')
-    normal! k
-    normal! $l
+        if(beforeChar ==# '{' && afterChar ==# '}')
+            return "\<BS>\<Del>"
+        elseif(beforeChar ==# '[' && afterChar ==# ']')
+            return "\<BS>\<Del>"
+        elseif(beforeChar ==# '(' && afterChar ==# ')')
+            return "\<BS>\<Del>"
+        elseif(beforeChar ==# '<' && afterChar ==# '>')
+            return "\<BS>\<Del>"
+        elseif(beforeChar ==# '"' && afterChar ==# '"')
+            return "\<BS>\<Del>"
+        elseif(beforeChar ==# '''' && afterChar ==# '''')
+            return "\<BS>\<Del>"
+        elseif(beforeChar ==# '`' && afterChar ==# '`')
+            return "\<BS>\<Del>"
+        else
+            return "return"
+        endif
 
-endfunction
+    endfunction
 
-" }-
+    " }-
 
-" Function to make lists -{
+    " }-
 
-function! ListIndent(option)   
+    " Auto Comment -{
 
-    " get the num of spaces and the first character
-    let [num, char] = SpacesAndFirstChar('.')
+    " }-
 
-    " see if it is the right first char
-    if char ==# '-'
+    " Change Indentation -{
+    "   
+    " }-
 
-        " if we don't have anything but the -
-        if getline('.') =~ '^\s*-[ ]$'
+    " }-
+
+
+    " Markdown Tools -{
+     
+    " Function to create Tables -{
+
+    function! CreateTable(...)
+
+        " initialize variables
+        let oneRow = "|"
+        let header = "|"
+        let top = "|"
+        let labels = []
+
+        " get the args for the table details
+        if len(a:000) > 2
+            
+            " get the rows and cols
+            let rows = a:1
+            let cols = a:2
+
+            " get the labels
+            for i in range(1, cols)
+                let label = get(a:, i + 2, "")
+                call add(labels, label)
+            endfor
+
+        " if you only got the rows and cols
+        elseif len(a:000) == 2
+
+            " get the rows and cols
+            let rows = a:1
+            let cols = a:2
+
+            let oneRow .= repeat("       |", cols)
+            let top .= repeat("       |", cols)
+            let header .= repeat(" :---: |", cols)
+            
+
+        " if you got no args
+        elseif len(a:000) == 0
+            
+            " get the rows and cols
+            let rows = input("Rows: ")
+            let cols = input("Cols: ")
+            
+            " get all the labels
+            for i in range(1, cols)
+                let label = input("Label ". i . ": ")
+                call add(labels, label)    
+            endfor
+        
+        endif
+
+        " Start making the table
+        for label in labels
+
+            " get the length of the label
+            let length = len(label)
+
+            let one
+            " update the different rows
+            if length >= 5
+
+                let top .= " " . label . " |"
+                let header .= " :" . repeat("-", length - 2) . ": |"
+                let oneRow .= repeat(" ", length + 2) . "|"
+
+            else
+
+                " see if it's odd or even
+                if length % 2 == 0
                     
-            " if we are pressing enter
-            if a:option =~# "\<CR>"
+                    let top .= " " . repeat(" ", ((5 - length) / 2) + 1) . label . repeat(" ", (5-length) / 2) . " |"
 
-                " if we are at the beginning of the row
-                if col('.') < 4
-
-                    return repeat("\<BS>", col('.') - 1)
-                    
                 else
                     
-                    return repeat("\<BS>", col('.') - 1) . repeat("\<Tab>", (num / 4) - 1) . "- "
+                    let top .= " " . repeat(" ", (5 - length) / 2) . label . repeat(" ", (5 - length) / 2) . " |"
 
                 endif
 
-            elseif a:option =~# "\<Tab>"
+                let header .= " :---: |"
+                let oneRow .= "       |"
 
-                return repeat("\<BS>", col('.') - 1) . repeat("\<Tab>", (num / 4) + 1) . "- "
+            endif
+
+        endfor
+
+        " print the table out with a new line before and after
+        call append(line('.'), top)
+        call append(line('.') + 1, header)
+        for i in range(1, rows)
+            call append(line('.') + 1 + i, oneRow)
+        endfor
+        
+        
+    endfunction
+
+    " }-
+
+    " Function to add lines -{ 
+
+    function! AddLine(...)
+
+        " see if we got any args
+        if(len(a:000) != 0)
+            let end = a:1
+        else
+            let end = 1
+        endif
+
+        " get the current line number
+        let curLine = line('.')
+
+        " get all ready for the substitution
+        let pattern = '[^[:space:]|]'
+        let replacement = ' '
+
+        " add the new line with empty cells
+        for i in range(1,end)
+        
+            call append(curLine, substitute(getline(curLine), pattern, replacement, 'g'))
+
+        endfor
+
+    endfunction
+
+    " }-"
+
+    " Function to add columns -{
+    "
+    " }-"
+
+    " Function to delete columns -{
+    "
+    " }-"
+
+    " Function to delete lines -{
+
+    function! DeleteLine(...)
+
+        " see if we got any args
+        if(len(a:000) != 0)
+            let end = a:1
+        else
+            let end = 1
+        endif
+
+        " delete the line
+        for i in range(1,end)
+        
+            normal! dd
+
+        endfor
+
+    endfunction
+
+    " }-
+
+    " Function to add check boxes -{
+        
+    function! AddCheckBox()
+            
+        " get the number of tabs needed
+        let [num, char] = SpacesAndFirstChar('.')
+        let tabs = num / 4
+
+        " return the CheckBox
+        call append(line('.') - 1, repeat("\<Tab>", tabs) . '- [ ] ')
+        normal! k
+        normal! $l
+
+    endfunction
+
+    " }-
+
+    " Function to make lists -{
+
+    function! ListIndent(option)   
+
+        " get the num of spaces and the first character
+        let [num, char] = SpacesAndFirstChar('.')
+
+        " see if it is the right first char
+        if char ==# '-'
+
+            " if we don't have anything but the -
+            if getline('.') =~ '^\s*-[ ]$'
+                        
+                " if we are pressing enter
+                if a:option =~# "\<CR>"
+
+                    " if we are at the beginning of the row
+                    if col('.') < 4
+
+                        return repeat("\<BS>", (num / 4) + 2)
+                        
+                    else
+                        
+                        return repeat("\<BS>", (num / 4) + 2) . repeat("\<Tab>", (num / 4) - 1) . "- "
+
+                    endif
+
+                elseif a:option =~# "\<Tab>"
+
+                    return repeat("\<BS>", (num / 4) + 2) . repeat("\<Tab>", (num / 4) + 1) . "- "
+
+                elseif a:option =~# "\<BS>"
+
+                    return repeat("\<BS>", (num / 4) + 2)
+
+                endif
+
+            else
+
+                " if we are pressing enter
+                if a:option =~# "\<CR>"
+                    echo num
+                    return "\<CR>" . "- "
+
+                elseif a:option =~# "\<Tab>"
+
+                    return "\<Tab>"
+
+                elseif a:option =~# "\<BS>"
+
+                    return "\<BS>"
+
+                endif
 
             endif
 
         else
 
-            " if we are pressing enter
-            if a:option =~# "\<CR>"
-                
-                return "\<CR>" . repeat("\<Tab>", num / 4) . "- "
-
-            else
-
-                return "\<Tab>"
-
-            endif
+            return a:option
 
         endif
 
-    else
+    endfunction
 
-        return a:option
+    " }-
 
-    endif
-
-endfunction
-
-" }-
-
-" Function to set bold and italics -{
-"
-" }-"
+    " Function to set bold and italics -{
+    "
+    " }-"
 
 " }-
 
@@ -736,6 +742,24 @@ endfunction
 
 " }-
 
+" <BS> Functions -{
+   
+function! BSFxn()
+    
+    " get the return from the delete pairs first
+    let ret = DeletePair()
+
+    " if it is just a <BS>, do the next function
+    if ret =~# "return"
+        let ret = ListIndent("\<BS>")
+    endif
+
+    return ret
+
+endfunction
+   
+" }-
+
 " }-
 
 
@@ -745,6 +769,12 @@ endfunction
 
 
 " Sand Box {
+
+
+
+
+
+
 
 " }
 
