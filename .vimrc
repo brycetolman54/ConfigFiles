@@ -72,10 +72,6 @@ set foldcolumn=0
 " Set the leader to do my own commands
 let mapleader=";"
 
-" Open/Close Brackets
-inoremap zc <Esc>zc
-inoremap zo <Esc>zo   
-
 " Moving in file operations
 inoremap <leader>4 <Esc>$i<Right>
 inoremap <leader>0 <Esc>0i
@@ -114,7 +110,22 @@ inoremap <leader>ck <Esc>:CK<Return>
 
 "}-
 
-   
+
+" Other Mappings -{
+
+" Open/Close Brackets
+inoremap zc <Esc>zc
+inoremap zo <Esc>zo   
+inoremap zM <Esc>zM
+inoremap zR <Esc>zR
+
+" Other keys
+inoremap <expr> <CR> CRFxn()
+inoremap <expr> <Tab> ListIndent("\<Tab>")
+
+" }-
+
+
 " Custom Commands -{
 
 " Resize Help Window to Close/Open
@@ -199,12 +210,9 @@ function! BracketIndent()
     endif 
 
     " return just the <CR> else
-    return "\<CR>"
+    return "return"
     
 endfunction
-
-" See if we need to indent the brackets
-inoremap <expr> <CR> BracketIndent()
 
 " }-
 
@@ -258,7 +266,6 @@ set ruler " show line and column number in the status bar
 
 " Run Configuration -{
 
-set viminfo+=n.vimmarks " set up to save marks in the file
 set omnifunc=syntaxcomplete#Complete
 set completeopt+=menuone,noselect
 set modeline " allows modeline options for files
@@ -274,6 +281,11 @@ set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python
 set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/ 
 
 "}-
+
+
+" Popup Menu Configuration -{
+
+" }-"
 
 
 " Command List Window -{
@@ -351,36 +363,24 @@ autocmd WinClosed * call CloseHelpAuto()
 
 " Autocomplete Pairs -{
 
-inoremap { {}<Left>
-inoremap <expr> } getline('.')[col('.') - 1] =~# '}' ? "\<Right>" : "}"
-
-inoremap [ []<Left>
-inoremap <expr> ] getline('.')[col('.') - 1] =~# ']' ? "\<Right>" : "]"
-
-inoremap ( ()<Left>
-inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
-
-inoremap < <><Left>
-inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
-
 " Checking for autocompletion of ", ', and ` -{
-function! CheckAdd(char)
+function! CheckAdd(char1, char2)
     " get the chars before and after the char of interest
     let afterChar=getline('.')[col('.') - 1]
     let beforeChar=getline('.')[col('.') - 2]
 
     " if the char after is the same, move past it
-    if afterChar ==# a:char
+    if afterChar ==# a:char1
         return "\<Right>"
 
     else
         " check to see if one is an alphanum
         if afterChar =~# '[[:alnum:]\|<\|[\|{\|(]' || beforeChar =~# '[[:alnum:]\|?\|\.\|,\|>\|]\|}\|)\|!\|:]' 
-            return a:char
+            return a:char1
     
         else
             " return a concatenation of the char
-            return a:char . a:char . "\<Left>"
+            return a:char1 . a:char2 . "\<Left>"
 
         endif
 
@@ -389,11 +389,23 @@ function! CheckAdd(char)
 endfunction
 " }-
 
-inoremap <expr> " CheckAdd('"')
+inoremap <expr> { CheckAdd('{', '}')
+inoremap <expr> } getline('.')[col('.') - 1] =~# '}' ? "\<Right>" : "}"
 
-inoremap <expr> ' CheckAdd('''')
+inoremap <expr> [ CheckAdd('[', ']')
+inoremap <expr> ] getline('.')[col('.') - 1] =~# ']' ? "\<Right>" : "]"
 
-inoremap <expr> ` CheckAdd('`')
+inoremap <expr> ( CheckAdd('(', ')')
+inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
+
+inoremap <expr> < CheckAdd('<', '>')
+inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
+
+inoremap <expr> " CheckAdd('"', '"')
+
+inoremap <expr> ' CheckAdd('''', '''')
+
+inoremap <expr> ` CheckAdd('`', '`')
 
 
 " Function to delete second of pair -{
@@ -569,6 +581,14 @@ endfunction
 
 " }-"
 
+" Function to add columns -{
+"
+" }-"
+
+" Function to delete columns -{
+"
+" }-"
+
 " Function to delete lines -{
 
 function! DeleteLine(...)
@@ -664,11 +684,11 @@ function! ListIndent(option)
 
 endfunction
 
-" call the function when you hit enter or tab
-inoremap <expr> <CR> ListIndent("\<CR>")
-inoremap <expr> <Tab> ListIndent("\<Tab>")
-
 " }-
+
+" Function to set bold and italics -{
+"
+" }-"
 
 " }-
 
@@ -698,6 +718,24 @@ endfunction
 
 " }-
 
+" <CR> Functions -{
+
+function! CRFxn()
+
+    " get the return from bracket first
+    let ret = BracketIndent()
+    
+    " if it is just a <CR>, do the next function
+    if ret =~# "return"
+        let ret = ListIndent("\<CR>")
+    endif
+
+    return ret
+
+endfunction
+
+" }-
+
 " }-
 
 
@@ -707,8 +745,6 @@ endfunction
 
 
 " Sand Box {
-
-
 
 " }
 
