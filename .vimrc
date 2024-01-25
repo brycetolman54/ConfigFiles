@@ -111,11 +111,28 @@ inoremap <leader>ck <Esc>:CK<Return>
 "}-
 
 
+" Assigning Values -{
+    
+autocmd BufReadPost * call SetLocals()
+
+function! SetLocals()
+
+    let b:BoldText = 0
+    let b:ItalicText = 0
+    let b:SupText = 0
+    let b:SubText = 0
+    let b:StrikeText = 0
+
+endfunction
+
+" }-
+
+
 " Other Mappings -{
 
 " Open/Close Brackets
 inoremap zc <Esc>zc
-inoremap zo <Esc>zo   
+inoremap zo <Esc>zo
 inoremap zM <Esc>zM
 inoremap zR <Esc>zR
 
@@ -124,7 +141,14 @@ inoremap <expr> <CR> CRFxn()
 inoremap <expr> <Tab> ListIndent("\<Tab>")
 inoremap <expr> <BS> BSFxn()
 
-    " }-
+" Markdown Tools
+inoremap <expr> bb SetFont("b", b:BoldText)
+inoremap <expr> ii SetFont("i", b:ItalicText)
+inoremap <expr> ss SetFont("s", b:StrikeText)
+inoremap <expr> uu SetFont("sup", b:SupText)
+inoremap <expr> dd SetFont("sub", b:SubText)
+
+" }-
 
 
     " Custom Commands -{
@@ -692,8 +716,38 @@ inoremap <expr> <BS> BSFxn()
 
     " }-
 
-    " Function to set bold and italics -{
-    "
+    " Function to set bold and italics and others -{
+    
+    function! SetFont(font, var)
+
+        " return the appropriate value
+        if a:var == 0
+            call ChangeVariable(a:font)
+            return "<" . a:font . ">"
+        elseif a:var == 1
+            call ChangeVariable(a:font)
+            return "</" . a:font . ">"
+        endif
+
+    endfunction
+
+    function! ChangeVariable(var)
+
+        if a:var == "b"
+            let b:BoldText = !b:BoldText
+        elseif a:var == "i"
+            let b:ItalicText = !b:ItalicText
+        elseif a:var == "s"
+            let b:StrikeText = !b:StrikeText
+        elseif a:var == "sup"
+            let b:SupText = !b:SupText
+        elseif a:var == "sub"
+            let b:SubText = !b:SubText
+        
+        endif
+
+    endfunction
+
     " }-"
 
 " }-
@@ -769,11 +823,6 @@ endfunction
 
 
 " Sand Box {
-
-
-
-
-
 
 
 " }
