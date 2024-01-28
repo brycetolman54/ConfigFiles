@@ -4,4 +4,8 @@
 - [ ] add col function for table
 - [ ] add notes about commands and mappings for them to use
 - [ ] maybe add quick shortcut for python __name__ == '__main__' fxn thing
+- [ ] fix the close window function dang it
+- [ ] fix the bs of the list (make it not depend on there only being - and [ ])
+- [ ] add something to do fractions (like a ;frac command that will take arguments to make the fraction)
+- [ ] add something to change the thing that shows up in the side hlep window automatically
 

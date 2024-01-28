@@ -214,3 +214,13 @@ function hid {
         ls -a $1 | grep ^'\.'  
     fi
 }
+
+# open the color codes
+alias col='cat ~/.colorcodes.txt'
+
+# run a python program
+alias p='python'
+
+# set ls colors
+export LS_COLORS=$LS_COLORS:'*.py=1;35'
+export LS_COLORS=$LS_COLORS:'*.md=1;90'

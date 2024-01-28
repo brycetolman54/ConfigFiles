@@ -40,6 +40,13 @@
 "     changing line indentation, commenting out sections
 "     of code, and more
 "
+"   Here is a list of mappings and commands that I have 
+"   included in this file for use in vim:
+"   - Insert Mode:
+"       - 
+"   - Normal Mode:
+"       - 
+"
 "   I have tried to set this file up so it is easy to
 "   understand, manipulate, and add to as you desire.
 "
@@ -56,7 +63,7 @@
 
 set foldenable
 set foldmethod=marker
-if expand('%:p') =~# 'vimrc$'
+if expand('%:p') =~# 'vimrc$' || expand('%:p') =~# '[.md$]'
     set foldmarker=-{,}-
 else
     set foldmarker={,}
@@ -107,6 +114,11 @@ inoremap <leader>ct <Esc>:CT<Return>
 inoremap <leader>al <Esc>:AL<Return>
 inoremap <leader>dl <Esc>:DL<Return>
 inoremap <leader>ck <Esc>:CK<Return>
+inoremap <expr> <leader>bo SetFont("b", b:BoldText)
+inoremap <expr> <leader>it SetFont("i", b:ItalicText)
+inoremap <expr> <leader>st SetFont("s", b:StrikeText)
+inoremap <expr> <leader>su SetFont("sup", b:SupText)
+inoremap <expr> <leader>dn SetFont("sub", b:SubText)
 
 "}-
 
@@ -140,13 +152,6 @@ inoremap zR <Esc>zR
 inoremap <expr> <CR> CRFxn()
 inoremap <expr> <Tab> ListIndent("\<Tab>")
 inoremap <expr> <BS> BSFxn()
-
-" Markdown Tools
-inoremap <expr> bb SetFont("b", b:BoldText)
-inoremap <expr> ii SetFont("i", b:ItalicText)
-inoremap <expr> ss SetFont("s", b:StrikeText)
-inoremap <expr> uu SetFont("sup", b:SupText)
-inoremap <expr> dd SetFont("sub", b:SubText)
 
 " }-
 
@@ -470,7 +475,7 @@ inoremap <expr> dd SetFont("sub", b:SubText)
     " }-
 
     " Change Indentation -{
-    "   
+   
     " }-
 
     " }-
