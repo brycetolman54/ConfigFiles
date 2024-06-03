@@ -5,7 +5,10 @@
 - [ ] add notes about commands and mappings for them to use
 - [ ] maybe add quick shortcut for python __name__ == '__main__' fxn thing
 - [ ] fix the close window function dang it
-- [ ] fix the bs of the list (make it not depend on there only being - and [ ])
+- [ ] add something to make it so that when we type <sup> or something that it changes the variable for 
 - [ ] add something to do fractions (like a ;frac command that will take arguments to make the fraction)
+- [ ] add someting to make the indent list function work when i hit n to make a new line
+- [ ] add aomething to change the it bo su, dn to make it in visual, you select things and it adds the tags to either end
 - [ ] add something to change the thing that shows up in the side hlep window automatically
+- [ ] fix the bold and italics and such to make it create new variables for the buffer every time a buffer is opened
 

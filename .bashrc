@@ -1,54 +1,76 @@
-export NVM_DIR="$HOME/.nvm"
+
+# Opening Notes -{
+#
+# 
+#
+#   _________________________.___._________ ___________
+#   \______   \______   \__  |   |\_   ___ \\_   _____/
+#    |    |  _/|       _//   |   |/    \  \/ |    __)_ 
+#    |    |   \|    |   \\____   |\     \____|        \
+#    |______  /|____|_  // ______| \______  /_______  /
+#           \/        \/ \/               \/        \/ 
+#
+#
+#
+#   This is the personal .bashrc file for Bryce Tolman.
+#
+#   This .bashrc file contains my:
+#
+#   - settings for bash
+#   - shortcuts to different locations
+#   - shortcuts for different programs
+#   - bindings for bash
+#   - shortcuts for git commands
+#   - shortcuts for helpful bash commands
+#
+#   }-
+
+
+
+# Setup -{
+
+cd # start in Home Directory
+
+export EDITOR="vim" # set editor as Vim
+
+export NVM_DIR="$HOME/.nvm" # set NVM directory
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# allows me to go to my coding class
-alias cs='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Winter/CS312'
+export HISTSIZE=5000 # set History for the session
+export HISTFILESIZE=100000 # set History across sessions
 
-# allows me to go to my dailydose code quickly
-alias dd='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Spring-Summer/CS260/dailydose'
+export TERM=xterm-256color # get good colors
 
-# allows me to open intellij easily
-alias idea='~/../../../c/Users/bat20/AppData/Local/JetBrains/Toolbox/scripts/idea.cmd'
+export LS_COLORS=$LS_COLORS:'*.py=1;35' # set py file color
+export LS_COLORS=$LS_COLORS:'*.md=1;90' # set md file color
 
-# takes me to my byu one drive
-alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University'
 
-# allows me to run python programs with winpty
-alias pysh='winpty python3.exe'
+# }-
 
-# allows acces to chatGPT
-export OPENAI_API_KEY="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"
 
-# sets up a new python environment given the name
-function newEnv {
-    if [ -z "$1" ]; then
-        echo "match: newEnv <env name>"
-    else
-        python -m venv $1
-        source $1/Scripts/activate
-    fi
-}
+# Shortcuts to Locations -{
 
-# deactivates the currect environment
-alias dct='deactivate'
+alias cs='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Winter/CS312' # to CS class
+alias dd='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Spring-Summer/CS260/dailydose' # to DailyDose code
+alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University' # to BYU OneDrive
+alias cds='od && cd BYU/Coding' # to Coding Projects
+alias tds='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Go/Go_CLI' # to Todo app
+alias dn='cd ~/Downloads' # to Downloads
 
-# automatically colors the grep output
-alias grep='grep -n --color=auto'
 
-# opens the glow app to look at md files
-alias glow='winpty glow.exe'
+# }-
 
-# allows me to access my chatGPT
-alias gpt='winpty gpt.exe'
 
-# formats the wc for me to see liens, words, and characters columns
-alias wcL='echo \ \ L \ \ W \ \ C \ \ File && wc'
-
-# sets my main editor as vim
-export EDITOR="vim"
-
-# runs C++ programs
+# Shortcuts for Functionality -{
+   
+alias idea='~/../../../c/Users/bat20/AppData/Local/JetBrains/Toolbox/scripts/idea.cmd' # opens IntelliJ
+alias pysh='winpty python3.exe' # runs Python shell
+alias p='python' # run Python programs
+alias fiji='ImageJ-win64.exe 2>/dev/null' # open FIJI for image analysis
+alias glow='winpty glow.exe' # use Glow for .md files
+alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql' # start SQL
+# runs C++ programs -{
 function runCpp {
 
     # make sure that we have the first args that we need
@@ -105,62 +127,123 @@ function runCpp {
         fi
     fi
 }
+# }-
+# view PDFs -{
+function pdf {
+    if [ -z $1 ]; then
+        echo "Please provide the file you want to see"
+    else 
+        pdftotext $* - | less
+    fi
+}
+# }-
+# view Images -{
+function img {
+    if [ -z $1 ]; then
+        echo "please provide an image or video file"
+    else
+        # update to change screen size
+        wsl timg -g100x100 $1
+    fi
+}
+# }-
+# use Pandoc -{
+function pdoc {
+    if [ -z $1 ]; then
+        echo "Please provide the file you want to use and the name of the file"
+    elif [ -z $2 ]; then
+        echo "Please provide a name for the file"
+    else
+        # use the pandoc
+        wsl pandoc $1 -o $2
+    fi
+}
+# }-
 
-# takes me to my coding projects folder
-alias cds='od && cd BYU/Coding'
+alias chess='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/client_jar/client.jar' # start ChessCafe
+alias cheser='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/server_jar/server.jar' # start ChessCafe Server
+alias ms='p /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/FunProjects/MineSweeper/ms.py' # play MineSweeper
 
-# makes my history size huge
-export HISTSIZE=5000
 
-# makes the size of the histroy file huge
-export HISTFILESIZE=100000
+# Set up Python env -{
+function newEnv {
+    if [ -z "$1" ]; then
+        echo "match: newEnv <env name>"
+    else
+        python -m venv $1
+        source $1/Scripts/activate
+    fi
+}
+# }-
+alias dct='deactivate' # Deactivate env
 
-# lets me quick edit my bash config
-alias e='vim ~/.bashrc'
+# }-
 
-# lets me restart bash quick
-alias s='source ~/.bashrc'
 
-# shortcut for screen clear
-alias c='clear'
+# Bindings -{
 
-# shorcut for git status
+bind 'set show-all-if-ambiguous on' # to show all options from tab
+bind '\C-e:end-of-line' # to move to end of line
+bind '\C-b:beginning-of-line' # to move to beginning of line
+bind -r '\' # remove binding on \
+bind '"\\":self-insert' # make \ show \
+
+# }-
+
+
+# Git Commands -{
+   
 alias gs='git status'
-
-# shortcut for git commit
+alias gaa='git add .'
+alias gg='git push'
+alias gl='git log'
 function gm {
     git commit -am "$1"
 }
-
-# shortcut for add all to git
-alias gaa='git add .'
-
-# shorcut to add one file to git
 function ga {
     git add $1
 }
-
-# shorcut to push to git
-alias gg='git push'
-
-# shortcut to see git log
-alias gl='git log'
-
-# shorcut to open an html file
-function openChrome {
-    chrome "$(echo $(pwd))/$1"
+function gc {
+    if [ -z $1 ]; then
+        git checkout main
+    else
+        git checkout $1
+    fi
 }
 
-# shortcut to quick edit vimrc
-alias ev='vim ~/.vimrc'
 
-# This is to fix the lightline vim plugin
-export TERM=xterm-256color
+# }-
 
-# shortcut to open mysql locally
-alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql'
 
-# gets the path of the current directory and stores it in the provided name
+# Updated Bash Commands -{
+   
+alias grep='grep -n --color=auto' # format grep output
+alias wcL='echo \ \ L \ \ W \ \ C \ \ File && wc' # format wc output
+   
+# }-
+
+
+# Shortcut Bash Commands -{
+
+alias c='clear' # clear
+alias cx='clear -x' # clear with scrollback
+
+alias e='vim ~/.bashrc' # edit bashrc
+alias s='source ~/.bashrc' # source bashrc
+alias cb='cat ~/.bashrc' # show bashrc
+alias ev='vim ~/.vimrc' # edit vimrc
+
+
+alias gb='go build' # build go projects
+alias sp='echo $PATH | sed "s/:/\n/g" | grep $1' # search PATH
+alias col='cat ~/.colorcodes.txt' # show colors for echo
+
+# Open files in Chrome -{
+function open {
+    chrome "$(pwd)/$1"
+}
+# }-
+# Get current directory path -{
 function gp {
     if [ -z $1 ]; then
         echo "please provide a path name"
@@ -168,45 +251,16 @@ function gp {
         eval "$1=$(pwd | tr -d '\n' | sed 's/\ /\\ /g')"
     fi
 }
-
-# starts ChessCafe
-alias chess='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/client_jar/client.jar'
-
-# starts chess server locally
-alias cheser='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/server_jar/server.jar'
-
-# shortcut to show bashrc contents
-alias cb='cat ~/.bashrc'
-
-# allows me to search in my path quickly and separates each element of the path
-alias sp='echo $PATH | sed "s/:/\n/g" | grep $1'
-
-# shortcut to go todo app source code
-alias tds='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Go/Go_CLI'
-
-# make the completion by tab show all options if ambiguous
-bind 'set show-all-if-ambiguous on'
-
-# make me skip to the end of the line
-bind '\C-e:end-of-line'
-
-# make me skip to the front of the line
-bind '\C-b:beginning-of-line'
-
-# stop the binding on \
-bind -r '\'
-bind '"\\":self-insert'
-
-# shortcut to run go build
-alias gb='go build'
+# }-
+# Run go build from anywhere -{
 function gbt {
     gp here
     tds
     gb
     cd "$here"
 }
-
-# see all hidden files in the folder
+# }-
+# Show hidden files -{
 function hid {
     if [ -z $1 ]; then
         ls -a | grep ^'\.'
@@ -214,13 +268,8 @@ function hid {
         ls -a $1 | grep ^'\.'  
     fi
 }
+# }-
 
-# open the color codes
-alias col='cat ~/.colorcodes.txt'
+# }-
 
-# run a python program
-alias p='python'
 
-# set ls colors
-export LS_COLORS=$LS_COLORS:'*.py=1;35'
-export LS_COLORS=$LS_COLORS:'*.md=1;90'

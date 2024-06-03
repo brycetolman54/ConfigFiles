@@ -1,5 +1,6 @@
 
 " Opening Notes -{
+"
 " 
 "
 "   _________________________.___._________ ___________
@@ -82,8 +83,8 @@ let mapleader=";"
 " Moving in file operations
 inoremap <leader>4 <Esc>$i<Right>
 inoremap <leader>0 <Esc>0i
-inoremap <leader>g <Esc>G
-inoremap <leader>gg <Esc>gg
+inoremap <leader>G <Esc>Gi
+inoremap <leader>gg <Esc>ggi
 inoremap <leader>b <Esc>bi
 inoremap <leader>e <Esc>ei
 
@@ -96,7 +97,7 @@ inoremap <leader>w <Esc>:w<Return>i<Right>
 inoremap <leader>s <Esc>:source<Return>
 
 " Formatting Operations
-inoremap <leader>n <Esc>o
+imap <leader>n <Esc>o
 inoremap <leader>r <Esc><C-r>
 inoremap <leader>y <Esc>yi<Right>
 inoremap <leader>p <Esc>pi<Right>
@@ -143,12 +144,16 @@ endfunction
 " Other Mappings -{
 
 " Open/Close Brackets
-inoremap zc <Esc>zc
-inoremap zo <Esc>zo
-inoremap zM <Esc>zM
-inoremap zR <Esc>zR
+inoremap zzc <Esc>zc
+inoremap zzo <Esc>zo
+inoremap zzM <Esc>zM
+inoremap zzR <Esc>zR
+
+# Add to Dictionary
+inoremap zzg <Esc>zgi
 
 " Other keys
+nmap o A<CR>
 inoremap <expr> <CR> CRFxn()
 inoremap <expr> <Tab> ListIndent("\<Tab>")
 inoremap <expr> <BS> BSFxn()
@@ -207,7 +212,13 @@ inoremap <expr> <BS> BSFxn()
     " }-
 
 
-    " Navigaition and Visual Properties -{
+    " Navigation and Visual Properties -{
+
+    " move on wrapped lines to the next row, not the next line
+    noremap j gj
+    noremap k gk
+    inoremap <Down> <C-o>gj
+    inoremap <Up> <C-o>gk
 
     set virtualedit+=onemore " allow cursor to stay at line end
     syntax on " makes syntax highlighting work
@@ -217,6 +228,14 @@ inoremap <expr> <BS> BSFxn()
     set mouse=a " Allows mouse movement and clicking
 
     " }-"
+
+
+    " Windows and Tabs -{
+        
+        set splitright " vertical split to the right of the current window
+        set splitbelow " horizontal split below the current window
+
+    " }-
 
 
     " Indentation -{
@@ -235,7 +254,7 @@ inoremap <expr> <BS> BSFxn()
 
             " do two returns, move up a line, and indent       
             let [num, char] = SpacesAndFirstChar('.')
-            return "\<CR>\<CR>\<Up>" . repeat("\<Tab>", num / 4 + 1)
+            return "\<CR>\<CR>" . repeat("\<Tab>", num / 4) . "\<Up>" . repeat("\<Tab>", num / 4 + 1)
                 
         endif 
 
@@ -285,7 +304,7 @@ inoremap <expr> <BS> BSFxn()
     " Status Bar and Command Line -{
 
     set history=1000 " let the command history be large
-    set wildmode=list:longest " shows multiple options for autocompelte
+    set wildmode=list:longest " shows multiple options for autocomplete
     set wildmenu " enables autocompletion of commands with TAB
     set showmode " shows the mode you are in on the command line
     set showcmd " shows partial commands at the bottom right
@@ -296,11 +315,16 @@ inoremap <expr> <BS> BSFxn()
 
     " Run Configuration -{
 
+    set spell " check spelling
+    
+    " set up the file to ignore words for checking
+    let $MYSPELL = expand('~') . '.vim/spell/en.utf-8.add' 
+
     set omnifunc=syntaxcomplete#Complete
     set completeopt+=menuone,noselect
-    set modeline " allows modeline options for files
+    set modeline " allows mode line options for files
 
-    set encoding=utf-8 " Sets the UTF encoding to 8
+    set encoding=utf-8 " Sets the UTF encoding to 8 
     set nobackup " doesn't save backup files
 
     " Ignore certain file types for vim
@@ -378,13 +402,13 @@ inoremap <expr> <BS> BSFxn()
     " }-
 
     " Open a new Command list if a new tab is opened
-    autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
+    "autocmd TabNew * if winnr('$') == 1 | call OpenCommandList() | endif
 
     " Open a new Command list when the program starts
-    autocmd VimEnter * call OpenCommandList()
+    "autocmd VimEnter * call OpenCommandList()
 
     " Close the help buffer if needed
-    autocmd WinClosed * call CloseHelpAuto()
+    "autocmd WinClosed * call CloseHelpAuto()
 
     " }- 
 
@@ -539,7 +563,6 @@ inoremap <expr> <BS> BSFxn()
             " get the length of the label
             let length = len(label)
 
-            let one
             " update the different rows
             if length >= 5
 
