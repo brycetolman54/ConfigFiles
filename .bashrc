@@ -26,7 +26,6 @@
 #   }-
 
 
-
 # Setup -{
 
 cd # start in Home Directory
@@ -124,6 +123,29 @@ function runCpp {
             g++ -std=c++17 $argCompile 
         else
             g++ -std=c++17 $argCompile && ./$output$argVar
+        fi
+    fi
+}
+# }-
+# runs R programs -{
+function rr {
+    # see if we have an argument
+    if [ -z $1 ]; then
+        # just run R
+        r
+    else
+
+        # check that we only have one file
+        if [ $# -ne 1 ]; then
+            echo "use only one file in the argument"
+            return 0
+        fi
+
+        # check that the file is the right type
+        if [ -n $(echo $1 | grep .R$) ]; then
+            rscript $1
+        else
+            echo "use an appropriate file type"
         fi
     fi
 }

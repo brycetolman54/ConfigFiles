@@ -149,7 +149,7 @@ inoremap zzo <Esc>zo
 inoremap zzM <Esc>zM
 inoremap zzR <Esc>zR
 
-# Add to Dictionary
+" Add to Dictionary
 inoremap zzg <Esc>zgi
 
 " Other keys
@@ -214,11 +214,18 @@ inoremap <expr> <BS> BSFxn()
 
     " Navigation and Visual Properties -{
 
-    " move on wrapped lines to the next row, not the next line
+    " Move on wrapped lines to the next row, not the next line
     noremap j gj
     noremap k gk
     inoremap <Down> <C-o>gj
     inoremap <Up> <C-o>gk
+
+    " Move to other windows
+    map <C-j> <C-W>j
+    map <C-k> <C-W>k
+    map <C-l> <C-W>l
+    map <C-h> <C-W>h
+    
 
     set virtualedit+=onemore " allow cursor to stay at line end
     syntax on " makes syntax highlighting work
@@ -226,6 +233,11 @@ inoremap <expr> <BS> BSFxn()
     set cursorline " adds a white line under the cursor's line
     set cursorcolumn " highlights the cursor's column
     set mouse=a " Allows mouse movement and clicking
+
+    " Show whitespace
+    set list
+    set listchars=eol:.,trail:~,extends:>,precedes:>
+    highlight SpecialKey ctermfg=lightgrey " highlight the space as grey
 
     " }-"
 
@@ -289,7 +301,7 @@ inoremap <expr> <BS> BSFxn()
 
     "}-
 
-     
+
     "Searching -{
 
     set incsearch " highlights matching characters as you search
@@ -315,29 +327,45 @@ inoremap <expr> <BS> BSFxn()
 
     " Run Configuration -{
 
-    set spell " check spelling
-    
-    " set up the file to ignore words for checking
+    set spell " Check spelling
+
+    " Set up the file to ignore words for checking
     let $MYSPELL = expand('~') . '.vim/spell/en.utf-8.add' 
 
     set omnifunc=syntaxcomplete#Complete
     set completeopt+=menuone,noselect
     set modeline " allows mode line options for files
 
-    set encoding=utf-8 " Sets the UTF encoding to 8 
-    set nobackup " doesn't save backup files
+    set encoding=utf-8 " Sets the UTF encoding to 8
+    set fileformat=unix " Use LF for line terminator
 
     " Ignore certain file types for vim
     set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 
     " Sets up the path to python for Vim plugins
-    set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python311.dll  
+    set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python311.dll 
     set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/ 
+
+    " Show a column at the left with notifications
+    set signcolumn=yes
+
+    " Stop errors from showing or sounding
+    set noerrorbells visualbell t_vb=
+
+    " Sets up undo control
+    set nobackup " Doesn't save backup files
+    set noswapfile " Doesn't store .swp files
+    set undodir=~/.vim/undodir
+    set undofile
 
     "}-
 
 
     " Popup Menu Configuration -{
+
+    set completeopt+=longest " complete the longest common text
+    set completeopt+=menuone " show even if there's one item
+    inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 
     " }-"
 
