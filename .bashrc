@@ -43,7 +43,7 @@ export TERM=xterm-256color # get good colors
 
 export LS_COLORS=$LS_COLORS:'*.py=1;35' # set py file color
 export LS_COLORS=$LS_COLORS:'*.md=1;90' # set md file color
-
+export LS_COLORS=$LS_COLORS:'*.R=1;33' # set R file color
 
 # }-
 
@@ -165,7 +165,7 @@ function img {
         echo "please provide an image or video file"
     else
         # update to change screen size
-        wsl timg -g100x100 $1
+        wsl timg -g50x50 $1
     fi
 }
 # }-

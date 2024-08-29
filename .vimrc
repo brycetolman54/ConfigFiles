@@ -13,7 +13,7 @@
 "
 "
 "   This is the personal .vimrc file for Bryce Tolman.
-"   
+"
 "   This .vimrc file contains a ton of regular options that
 "   you could find in any old .vimrc file. But that's not
 "   the cool part...
@@ -30,7 +30,9 @@
 "     to make your life easier
 "   - Functions that allow you to have a cheat sheet open
 "     in your vim files so you can remember pesky key 
-"     strokes without having to look them up constantly
+"     strokes without having to look them up constantly 
+"     (I have a custom command list that you can have show 
+"     when vim opens if you want that)
 "   - Functions that make writing MarkDown much easier such
 "     as creating tables, adding rows, making check box
 "     lists, writing subscript and superscript, writing
@@ -42,10 +44,13 @@
 "     of code, and more
 "
 "   Here is a list of mappings and commands that I have 
-"   included in this file for use in vim:
+"   included in this file for use in vim (the same that
+"   show in my custom command list):
 "   - Insert Mode:
 "       - 
 "   - Normal Mode:
+"       - 
+"   - Visual Mode:
 "       - 
 "
 "   I have tried to set this file up so it is easy to
@@ -81,16 +86,16 @@ set foldcolumn=0
 let mapleader=";"
 
 " Moving in file operations
-inoremap <leader>4 <Esc>$i<Right>
-inoremap <leader>0 <Esc>0i
-inoremap <leader>G <Esc>Gi
-inoremap <leader>gg <Esc>ggi
-inoremap <leader>b <Esc>bi
-inoremap <leader>e <Esc>ei
+inoremap <leader>4 <C-o>$<Right>
+inoremap <leader>0 <C-o>0
+inoremap <leader>G <C-o>G
+inoremap <leader>gg <C-o>gg
+inoremap <leader>b <C-o>b
+inoremap <leader>e <C-o>e
 
 
 " File Operations
-inoremap <leader><leader> <Esc>
+inoremap <leader><leader><leader> <Esc>
 inoremap <leader>q <Esc>:q!<Return>
 inoremap <leader>x <Esc>:x<Return>
 inoremap <leader>w <Esc>:w<Return>i<Right>
@@ -98,12 +103,13 @@ inoremap <leader>s <Esc>:source<Return>
 
 " Formatting Operations
 imap <leader>n <Esc>o
+imap <leader>N <Esc>O
 inoremap <leader>r <Esc><C-r>
-inoremap <leader>y <Esc>yi<Right>
-inoremap <leader>p <Esc>pi<Right>
-inoremap <leader>d <Esc>di<Right>
-inoremap <leader>u <Esc>ui<Right>
-inoremap <leader>dd <Esc>ddi
+inoremap <leader>y <C-o>y<Right>
+inoremap <leader>p <C-o>p<Right>
+inoremap <leader>d <C-o>d<Right>
+inoremap <leader>u <C-o>u<Right>
+inoremap <leader>dd <C-o>dd
 
 
 " Toggle Help Window
@@ -113,13 +119,29 @@ inoremap <leader>oh <Esc>:OH<Return>
 " Markdown Tools
 inoremap <leader>ct <Esc>:CT<Return>
 inoremap <leader>al <Esc>:AL<Return>
-inoremap <leader>dl <Esc>:DL<Return>
 inoremap <leader>ck <Esc>:CK<Return>
+inoremap <leader>` ```<CR><CR>```<Up>
 inoremap <expr> <leader>bo SetFont("b", b:BoldText)
 inoremap <expr> <leader>it SetFont("i", b:ItalicText)
 inoremap <expr> <leader>st SetFont("s", b:StrikeText)
 inoremap <expr> <leader>su SetFont("sup", b:SupText)
 inoremap <expr> <leader>dn SetFont("sub", b:SubText)
+
+" Coding Tools
+inoremap <leader>/o <C-o>:call Comment(&filetype,line('.'),line('.'), 1)<CR>
+inoremap <leader>/i <C-o>:call Comment(&filetype,line('.'),line('.'), 0)<CR>
+vnoremap <leader>/o :call Comment(&filetype, line('.'), 1)<CR>
+vnoremap <leader>/i :call Comment(&filetype, line('.'), 0)<CR>
+inoremap <leader>] <C-o>:call Indent(line('.'), 1)<CR>
+inoremap <leader>[ <C-o>:call Indent(line('.'), 0)<CR>
+vnoremap <leader>] :call Indent(line('.'), 1)<CR>
+vnoremap <leader>[ :call Indent(line('.'), 0)<CR>
+
+" R Tools
+inoremap <leader>cat cat("\n\n")<Left><Left><Left><Left>
+inoremap <leader><leader>t TRUE
+inoremap <leader><leader>f FALSE
+inoremap <leader><leader>n NULL
 
 "}-
 
@@ -144,16 +166,17 @@ endfunction
 " Other Mappings -{
 
 " Open/Close Brackets
-inoremap zzc <Esc>zc
-inoremap zzo <Esc>zo
-inoremap zzM <Esc>zM
-inoremap zzR <Esc>zR
+inoremap zc <C-o>zc
+inoremap zo <C-o>zo
+inoremap zM <C-o>zM
+inoremap zR <C-o>zR
 
 " Add to Dictionary
-inoremap zzg <Esc>zgi
+inoremap zg <C-o>zg
 
 " Other keys
 nmap o A<CR>
+nmap O <Up>A<CR>
 inoremap <expr> <CR> CRFxn()
 inoremap <expr> <Tab> ListIndent("\<Tab>")
 inoremap <expr> <BS> BSFxn()
@@ -524,17 +547,48 @@ inoremap <expr> <BS> BSFxn()
 
     " Auto Comment -{
 
+    function! Comment(ft, line, on)
+
+        " Let's start by getting the appropriate comment mark
+
+        if index(['python', 'ruby', 'perl', 'sh', 'yaml', 'r', 'make', 'tcl', 'awk', 'gherkin', 'haskell'], a:ft) >= 0
+            let commentMark = "#"
+        elseif index(['javascript', 'java', 'cpp', 'c', 'cs', 'go', 'rust', 'kotlin', 'swift', 'scala', 'dart', 'php', 'typescript', 'ogjc'], a:ft) >= 0
+            let commentMark = "//"
+        elseif a:ft == 'vim'
+            let commentMark = "\'"
+        elseif index(['asm', 'lisp', 'scheme'], a:ft) >= 0
+            let commentMark = ";"
+        elseif index(['matlab', 'prolog', 'tex'], a:ft) >= 0
+            let commentMark = "%"
+        elseif index(['lua', 'sql', 'ada'], a:ft) >= 0
+            let commentMark = "--"
+        else
+            return
+        endif
+
+        " Then we can add/remove the mark from the start of the line
+
+        call setline(a:line, a:on ? commentMark . " " . getline(a:line) : strpart(getline(a:line), len(commentMark) + 1))
+
+    endfunction
     " }-
 
     " Change Indentation -{
-   
+    function! Indent(line, right)
+
+    call setline(a:line, a:right ? "    " . getline(a:line) : strpart(getline(a:line), 4))
+
+    endfunction
+
+
     " }-
 
     " }-
 
 
     " Markdown Tools -{
-     
+
     " Function to create Tables -{
 
     function! CreateTable(...)
