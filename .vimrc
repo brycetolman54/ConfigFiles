@@ -220,19 +220,19 @@ inoremap <expr> <BS> BSFxn()
 inoremap <C-v> <C-o>V
 
 " Mappings for the Markdown Table function
-for letter in range(97, 122)
-    let char = nr2char(letter)
-    execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
-endfor
-for Letter in range(65, 90)
-    let char = nr2char(Letter)
-    execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
-endfor
-for number in range(48, 57)
-    let char = nr2char(number)
-    execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
-endfor
-inoremap <Space> <Space><C-o>:call ColumnWidth(' ')<CR>
+" for letter in range(97, 122)
+"     let char = nr2char(letter)
+"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+" endfor
+" for Letter in range(65, 90)
+"     let char = nr2char(Letter)
+"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+" endfor
+" for number in range(48, 57)
+"     let char = nr2char(number)
+"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+" endfor
+" inoremap <Space> <Space><C-o>:call ColumnWidth(' ')<CR>
 
 " }-
 
@@ -730,6 +730,19 @@ function! Comment(ft, line, on)
 endfunction
 " }-
 
+" Change Indentation -{
+function! Indent(line, right)
+
+    " get the number of spaces at the beginning
+    let [num, char, char2] = SpacesAndFirstChar('.')
+
+    " remove or add the first 4 spaces
+    call setline(a:line, a:right ? "    " . getline(a:line) : num >= 4 ? strpart(getline(a:line), 4) : getline(a:line))
+
+endfunction
+
+" }-
+
 " }-
 
 
@@ -1030,6 +1043,8 @@ function! ColumnWidth(arg='')
 
         endif
 
+    else
+        return "return"
     endif
 
 endfunction
@@ -1317,11 +1332,17 @@ endfunction
 " }-
 
 " <BS> Functions -{
-   
+
 function! BSFxn()
-    
-    " get the return from the delete pairs first
-    let ret = DeletePair()
+
+    " see if we are in a table first
+"     let ret = ColumnWidth('bs')
+    let ret="return"
+
+    " if it is not in a table, see delete pair
+    if ret =~# "return"
+        let ret = DeletePair()
+    endif
 
     " if it is just a <BS>, do the next function
     if ret =~# "return"
@@ -1331,7 +1352,7 @@ function! BSFxn()
     return ret
 
 endfunction
-   
+
 " }-
 
 " }-
@@ -1401,6 +1422,8 @@ abbrev Omega Ω
 " TODO: update cursor movement to wrap tables and lists (lists at beginning,
 " tables at the edge of either column)
 " TODO: incorporate BS and Delete into the table width adjustment (from their functions, call and add necessary spaces to the column to make up for loss)
+
+
 
 " this is for comments in vimrc specifically
 inoremap <expr> -{ "-{}-<Left><Left>"
