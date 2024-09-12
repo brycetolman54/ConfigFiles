@@ -922,7 +922,7 @@ endfunction
 
 " }-
 
-" Function to stay after the - of the list -{
+" Function for list and table cursor placement -{
 
 function! CursorMoved()
 
@@ -941,6 +941,7 @@ function! CursorMoved()
         " get the ends of the cell we are in
 "         let left = SidePipe('.', 0)
 "         let right = SidePipe('.', 1)
+
 
 
     " see if we are in a list now
@@ -1150,10 +1151,10 @@ endfunction
 function! SidePipe(ln, right)
 
     " get the current col
-    let curCol = col(a:ln - 1)
+    let curCol = col(a:ln) - 1
 
     " set up the trackers based on which side we want
-    let pipePos = 0
+    let pipePos = a:right ? 0 : -1
     let mover = a:right ? 1 : -1
 
     " get the line and loop it until we hit a pipe
