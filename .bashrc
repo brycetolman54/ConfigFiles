@@ -28,7 +28,7 @@
 
 # Setup -{
 
-cd # start in Home Directory
+export R_HOME="~"
 
 export EDITOR="vim" # set editor as Vim
 
@@ -44,13 +44,14 @@ export TERM=xterm-256color # get good colors
 export LS_COLORS=$LS_COLORS:'*.py=1;35' # set py file color
 export LS_COLORS=$LS_COLORS:'*.md=1;90' # set md file color
 export LS_COLORS=$LS_COLORS:'*.R=1;33' # set R file color
+export LS_COLORS=$LS_COLORS:'*.java=1;31' # set Java file color
 
 # }-
 
 
 # Shortcuts to Locations -{
 
-alias cs='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Winter/CS312' # to CS class
+alias sem='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/' # to current semester
 alias dd='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Spring-Summer/CS260/dailydose' # to DailyDose code
 alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University' # to BYU OneDrive
 alias cds='od && cd BYU/Coding' # to Coding Projects
@@ -70,10 +71,10 @@ alias fiji='ImageJ-win64.exe 2>/dev/null' # open FIJI for image analysis
 alias glow='winpty glow.exe' # use Glow for .md files
 alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql' # start SQL
 # runs C++ programs -{
-function runCpp {
+function runc {
 
     # make sure that we have the first args that we need
-    if [ -z "$1" ] || [ -z $(echo $1 | grep .cpp$) ]; then
+    if [ -z "$1" ] || [ -z $(echo $1 | grep -E '.cpp$|.c$') ]; then
         echo "pattern: runCpp <program_to_compile> <output_name> <optional_args>"
     else
 
@@ -291,7 +292,9 @@ function hid {
     fi
 }
 # }-
-
+# Run UML from anywhere -{
+alias uml='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Java/.plantuml.jar'
 # }-
 
+# }-
 
