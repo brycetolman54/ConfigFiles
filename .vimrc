@@ -172,6 +172,12 @@ inoremap <leader>su <sup></sup><Left><Left><Left><Left><Left><Left>
 inoremap <leader>dn <sub></sub><Left><Left><Left><Left><Left><Left>
 inoremap <leader>fr <C-o>:FR<CR>
 
+vnoremap <leader>bo :call AddTag("<b>", "</b>")<CR>
+vnoremap <leader>it :call AddTag("<i>", "</i>")<CR>
+vnoremap <leader>st :call AddTag("<s>", "</s>")<CR>
+vnoremap <leader>su :call AddTag("<sup>", "</sup>")<CR>
+vnoremap <leader>dn :call AddTag("<sub>", "</sub>")<CR>
+
 " Coding Tools
 inoremap <leader>/o <C-o>:call Comment(&filetype, line('.'), 1)<CR>
 inoremap <leader>/i <C-o>:call Comment(&filetype, line('.'), 0)<CR>
@@ -1020,6 +1026,24 @@ endfunction
 
 " }-
 
+" Function to add HTML tags -{
+
+function! AddTag(first, second)
+
+    " get the beginning and end of the selection
+    let beg = getpos("'<")[2] - 1
+    let fin = getpos("'>")[2]
+
+    " get the line first
+    let line = getline('.')
+
+    " put the tags in place
+    call setline(line('.'), strpart(line, 0, beg) . a:first . strpart(line, beg, fin - beg) . a:second . strpart(line, fin))
+
+endfunction
+
+" }-
+
 " }-
 
 
@@ -1195,8 +1219,6 @@ endfunction
 " TODO: make it so when we change indentation, we change the thing at the
 " beginning of the list
 " TODO: make a function to find if what is at the beginning of the line is for" a list or not
-
-
 
 " this is for comments in vimrc specifically
 inoremap <expr> -{ "-{}-<Left><Left>"
