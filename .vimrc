@@ -911,19 +911,54 @@ endfunction
 
 " }-
 
+" Function to loop list lines -{
+
+function! LeftList()
+
+    
+
+endfunction
+
+" }-
+
+
 " Function to stay after the - of the list -{
 
 function! CursorMoved()
 
-    " get the num of spaces and the first characters
-    let [num, char, char2] = SpacesAndFirstChar('.')
+    " see if we are on a table line
+    if getline('.') =~ '^\s*|.*|\s*$'
 
-    " if the first char is -, see where we are in the line
-    if char ==# '-'
+        " see if we are in the table, if not, move us into the table
+        if col('.') == col('$')
+            call cursor(line('.'), col('$') - 1)
+        endif
 
-        if col('.') < num + 3
+        " get the ends of the cell we are in
+        let left = SidePipe('.', 0)
+        let right = SidePipe('.', 1)
 
-            call cursor(line('.'), num + 3)
+        " 
+
+|   h   |
+| :---: |
+|       |
+
+
+    " see if we are in a list now
+    else
+
+        " get the num of spaces and the first characters
+        let [num, char, char2] = SpacesAndFirstChar('.')
+
+        " if the first char is -, see where we are in the line
+        if char ==# '-'
+
+            if col('.') < num + 3
+
+                call cursor(line('.'), num + 3)
+
+            endif
 
         endif
 
@@ -1237,6 +1272,60 @@ endfunction
 " }-
 
 
+" 18) Abbreviations -{
+
+abbrev alpha α
+abbrev beta β
+abbrev gamma γ
+abbrev delta δ
+abbrev epsilon ε
+abbrev zeta ζ
+abbrev eta η
+abbrev theta θ
+abbrev iota ι
+abbrev kappa κ
+abbrev lambda λ
+abbrev mu μ
+abbrev nu ν
+abbrev xi ξ
+abbrev omicron ο
+abbrev pi π
+abbrev rho ρ
+abbrev sigma σ
+abbrev tau τ
+abbrev upsilon υ
+abbrev phi φ
+abbrev chi χ
+abbrev psi ψ
+abbrev omega ω
+
+abbrev Alpha Α
+abbrev Beta Β
+abbrev Gamma Γ
+abbrev Delta Δ
+abbrev Epsilon Ε
+abbrev Zeta Ζ
+abbrev Eta Η
+abbrev Theta Θ
+abbrev Iota Ι
+abbrev Kappa Κ
+abbrev Lambda Λ
+abbrev Mu Μ
+abbrev Nu Ν
+abbrev Xi Ξ
+abbrev Omicron Ο
+abbrev Pi Π
+abbrev Rho Ρ
+abbrev Sigma Σ
+abbrev Tau Τ
+abbrev Upsilon Υ
+abbrev Phi Φ
+abbrev Chi Χ
+abbrev Psi Ψ
+abbrev Omega Ω
+
+" }-
+
 " TODO: make it so I can remove the - easily like comments
 " TODO: make it so I can use a,b,c and i,ii,iii in lists
 " TODO: make a function to find the next char to use in a list (for indent) or
@@ -1244,6 +1333,7 @@ endfunction
 " TODO: make it so when we change indentation, we change the thing at the
 " beginning of the list
 " TODO: make a function to find if what is at the beginning of the line is for" a list or not
+
 
 
 " this is for comments in vimrc specifically
