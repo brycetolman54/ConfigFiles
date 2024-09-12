@@ -219,6 +219,21 @@ inoremap <expr> <BS> BSFxn()
 " Enter visual mode from insert mode
 inoremap <C-v> <C-o>V
 
+" Mappings for the Markdown Table function
+for letter in range(97, 122)
+    let char = nr2char(letter)
+    execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+endfor
+for Letter in range(65, 90)
+    let char = nr2char(Letter)
+    execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+endfor
+for number in range(48, 57)
+    let char = nr2char(number)
+    execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+endfor
+inoremap <Space> <Space><C-o>:call ColumnWidth(' ')<CR>
+
 " }-
 
 
@@ -961,7 +976,7 @@ autocmd CursorMovedI * call CursorMoved()
 
 " Function to change column width in tables -{
 
-function! ColumnWidth()
+function! ColumnWidth(arg='')
 
     " see if we are in a table
     let line = getline('.')
@@ -974,8 +989,7 @@ function! ColumnWidth()
 
         " get the width of the content and the max width we can have
         let maxWidth = len(colContent) - 2
-        let length = len(matchstr(colContent, '\a\+\( \a\+\)*'))
-        echom length
+        let length = a:arg == ' ' ? len(matchstr(colContent, '\a\+\( \a\+\)*\s')) : len(matchstr(colContent, '\a\+\( \a\+\)*'))
 
         " adjust the column size appropriately
         let curCol = col('.')
@@ -993,6 +1007,7 @@ function! ColumnWidth()
             " update the :---: row
             call setline(beg + 1, strpart(getline(beg + 1), 0, left + 3) . "-" . strpart(getline(beg + 1), left + 3))
 
+            " update the other rows
             if length % 2 == 1
                 call setline(beg, strpart(getline(beg), 0, left) . ' ' . strpart(getline(beg), left))
                 for line in range(beg + 2, fin)
@@ -1017,11 +1032,7 @@ function! ColumnWidth()
 
     endif
 
-
 endfunction
-
-autocmd TextChangedI * call ColumnWidth()
-autocmd TextChanged * call ColumnWidth()
 
 " }-
 
@@ -1389,10 +1400,7 @@ abbrev Omega Ω
 " TODO: make a function to find if what is at the beginning of the line is for" a list or not
 " TODO: update cursor movement to wrap tables and lists (lists at beginning,
 " tables at the edge of either column)
-" TODO: fix the table to only go when you type something (map every single
-" character and number and such, figure out how to do spaces, maybe make it
-" call with a bool in the map)
-
+" TODO: incorporate BS and Delete into the table width adjustment (from their functions, call and add necessary spaces to the column to make up for loss)
 
 " this is for comments in vimrc specifically
 inoremap <expr> -{ "-{}-<Left><Left>"
