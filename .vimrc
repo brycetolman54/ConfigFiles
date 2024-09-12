@@ -165,18 +165,17 @@ inoremap <leader>dc <C-o>:DC<CR>
 inoremap <leader>ck <C-o>:CK 1<CR>
 inoremap <leader>cka <C-o>:CK 0<CR>
 inoremap <leader>` ```<CR><CR>```<Up>
-inoremap <leader>bo <b></b><Left><Left><Left><Left>
-inoremap <leader>it <i></i><Left><Left><Left><Left>
-inoremap <leader>st <s></s><Left><Left><Left><Left>
-inoremap <leader>su <sup></sup><Left><Left><Left><Left><Left><Left>
-inoremap <leader>dn <sub></sub><Left><Left><Left><Left><Left><Left>
+inoremap <expr> <leader>bo AddTagI("<b>","</b>")
+inoremap <expr> <leader>it AddTagI("<i>","</i>")
+inoremap <expr> <leader>st AddTagI("<s>","</s>")
+inoremap <expr> <leader>su AddTagI("<sup>","</sup>")
+inoremap <expr> <leader>dn AddTagI("<sub>","</sub>")
 inoremap <leader>fr <C-o>:FR<CR>
-
-vnoremap <leader>bo :call AddTag("<b>", "</b>")<CR>
-vnoremap <leader>it :call AddTag("<i>", "</i>")<CR>
-vnoremap <leader>st :call AddTag("<s>", "</s>")<CR>
-vnoremap <leader>su :call AddTag("<sup>", "</sup>")<CR>
-vnoremap <leader>dn :call AddTag("<sub>", "</sub>")<CR>
+vnoremap <leader>bo :call AddTagV("<b>", "</b>")<CR>
+vnoremap <leader>it :call AddTagV("<i>", "</i>")<CR>
+vnoremap <leader>st :call AddTagV("<s>", "</s>")<CR>
+vnoremap <leader>su :call AddTagV("<sup>", "</sup>")<CR>
+vnoremap <leader>dn :call AddTagV("<sub>", "</sub>")<CR>
 
 " Coding Tools
 inoremap <leader>/o <C-o>:call Comment(&filetype, line('.'), 1)<CR>
@@ -209,9 +208,11 @@ inoremap zzR <C-o>zR
 " Add to Dictionary
 inoremap zzg <C-o>zg
 
-" Other keys
+" Newline
 nmap o A<CR>
 nmap O <Up>A<CR>
+
+" For Lists
 inoremap <expr> <CR> CRFxn()
 inoremap <expr> <Tab> ListIndent("\<Tab>")
 inoremap <expr> <BS> BSFxn()
@@ -1026,9 +1027,9 @@ endfunction
 
 " }-
 
-" Function to add HTML tags -{
+" Function to add HTML tags in visual mode -{
 
-function! AddTag(first, second)
+function! AddTagV(first, second)
 
     " get the beginning and end of the selection
     let beg = getpos("'<")[2] - 1
@@ -1043,6 +1044,30 @@ function! AddTag(first, second)
 endfunction
 
 " }-
+
+" Function to add HTML tags in insert mode -{
+
+function! AddTagI(first, second)
+
+    " find the char before and after the current col
+    let line = getline('.')
+    let col = col('.')
+
+    let before = strpart(line, col - 2, 1)
+    let after = strpart(line, col - 1, 1)
+
+    " set the line based on what value we are next to
+    if (before == ' ' || col == 1) && (after == ' ' || col == col('$'))
+        return a:first . a:second . repeat("\<Left>", len(a:second))
+    elseif before == ' '
+        return a:first
+    else
+        return a:second
+    endif
+
+endfunction
+
+"  }-
 
 " }-
 
