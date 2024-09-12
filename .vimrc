@@ -38,9 +38,8 @@
 "     bold, and more
 "   - Code that makes working in vim more similar to the 
 "     IDEs that you are used to writing in; providing 
-"     help with autocompleting pairs ({}, [], etc), 
-"     changing line indentation, commenting out sections
-"     of code, and more
+"     help with autocompleting pairs ({}, [], etc),
+"     commenting out sections of code, and more
 "
 "   Here is a list of mappings and commands that I have 
 "   included in this file for use in vim (the same that
@@ -716,20 +715,6 @@ function! Comment(ft, line, on)
 endfunction
 " }-
 
-" Change Indentation -{
-function! Indent(line, right)
-
-" get the number of spaces at the beginning
-let [num, char, char2] = SpacesAndFirstChar('.')
-
-    " remove or add the first 4 spaces
-    call setline(a:line, a:right ? "    " . getline(a:line) : num >= 4 ? strpart(getline(a:line), 4) : getline(a:line))
-
-endfunction
-
-
-" }-
-
 " }-
 
 
@@ -971,6 +956,54 @@ endfunction
 
 autocmd CursorMoved * call CursorMoved()
 autocmd CursorMovedI * call CursorMoved()
+
+" }-
+
+" Function to change column width in tables -{
+
+function! ColumnWidth()
+
+    " see if we are in a table
+    let line = getline('.')
+    if line =~ '^\s*|.*|\s*$'
+
+        " get the left and right side and the column content
+        let left = SidePipe('.', 0)
+        let right = SidePipe('.', 1)
+        let colContent = strpart(line, left, right - left - 1)
+
+        " get the width of the content and the max width we can have
+        let maxWidth = len(colContent) - 2
+        let length = len(matchstr(colContent, '\a\+\( \a\+\)*'))
+        echom length
+
+        " adjust the column size appropriately
+        let curCol = col('.')
+        if maxWidth > length
+            if length % 2 == 1
+                call setline(line('.'), strpart(line, 0, curCol - 1) . strpart(line, curCol))
+            else
+                call setline(line('.'), strpart(line, 0, left) . strpart(line, left + 1))
+                call cursor(line('.'), col('.') - 1)
+            endif
+        else
+            " we have to update all lines, not just the one we are on
+            let [beg, fin] = AboveBelow('.')
+
+            if length % 2 == 1
+                
+            else
+                
+            endif
+        endif
+
+    endif
+
+
+endfunction
+
+autocmd TextChangedI * call ColumnWidth()
+autocmd TextChanged * call ColumnWidth()
 
 " }-
 
@@ -1336,6 +1369,8 @@ abbrev Omega Ω
 " TODO: make it so when we change indentation, we change the thing at the
 " beginning of the list
 " TODO: make a function to find if what is at the beginning of the line is for" a list or not
+" TODO: update cursor movement to wrap tables and lists (lists at beginning,
+" tables at the edge of either column)
 
 
 
