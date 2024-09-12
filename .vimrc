@@ -990,11 +990,29 @@ function! ColumnWidth()
             " we have to update all lines, not just the one we are on
             let [beg, fin] = AboveBelow('.')
 
+            " update the :---: row
+            call setline(beg + 1, strpart(getline(beg + 1), 0, left + 3) . "-" . strpart(getline(beg + 1), left + 3))
+
             if length % 2 == 1
-                
+                call setline(beg, strpart(getline(beg), 0, left) . ' ' . strpart(getline(beg), left))
+                for line in range(beg + 2, fin)
+                    if line == line('.')
+                        continue
+                    endif
+                    call setline(line, strpart(getline(line), 0, left) . ' ' . strpart(getline(line), left))
+                endfor
+
             else
-                
+                call setline(beg, strpart(getline(beg), 0, right - 2) . ' ' . strpart(getline(beg), right - 2))
+                for line in range(beg + 2, fin)
+                    if line == line('.')
+                        continue
+                    endif
+                    call setline(line, strpart(getline(line), 0, right - 2) . ' ' . strpart(getline(line), right - 2))
+                endfor
+
             endif
+
         endif
 
     endif
