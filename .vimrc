@@ -1389,7 +1389,9 @@ abbrev Omega Ω
 " TODO: make a function to find if what is at the beginning of the line is for" a list or not
 " TODO: update cursor movement to wrap tables and lists (lists at beginning,
 " tables at the edge of either column)
-
+" TODO: fix the table to only go when you type something (map every single
+" character and number and such, figure out how to do spaces, maybe make it
+" call with a bool in the map)
 
 
 " this is for comments in vimrc specifically
