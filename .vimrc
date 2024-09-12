@@ -86,10 +86,12 @@
 
 set foldenable
 set foldmethod=marker
-if expand('%') =~# 'vimrc$'
+if expand('%') =~# 'vimrc$' || expand('%') =~# 'bashrc$'
     set foldmarker=-{,}-
+    set foldlevel=0
 else
     set foldmarker={,}
+    set foldlevel=99
 endif
 set foldminlines=2
 set foldcolumn=0
@@ -130,7 +132,7 @@ inoremap <leader><leader> <Esc>
 inoremap <leader>q <Esc>:q!<Return>
 inoremap <leader>x <Esc>:x<Return>
 inoremap <leader>w <Esc>:w<Return>i<Right>
-inoremap <leader>s <Esc>:source<Return>
+inoremap <leader>s <Esc>:w<Return>:source ~/.vimrc<Return>
 
 " Formatting Operations
 imap <leader>n <Esc>o
@@ -280,7 +282,7 @@ function! BracketIndent()
     " see if the characters are { and }
     if getline(line('.'))[col('.') - 2] ==# '{' && getline('.')[col('.') - 1] ==# '}'
 
-        " do two returns, move up a line, and indent       
+        " do two returns, move up a line, and indent
         let [num, char, char2] = SpacesAndFirstChar('.')
         return "\<CR>\<CR>" . "\<Up>" . repeat("\<Tab>", num / 4 + 1)
 
@@ -638,9 +640,6 @@ inoremap <expr> ] getline('.')[col('.') - 1] =~# ']' ? "\<Right>" : "]"
 
 inoremap <expr> ( CheckAdd('(', ')')
 inoremap <expr> ) getline('.')[col('.') - 1] =~# ')' ? "\<Right>" : ")"
-
-inoremap <expr> < CheckAdd('<', '>')
-inoremap <expr> > getline('.')[col('.') - 1] =~# '>' ? "\<Right>" : ">"
 
 inoremap <expr> " CheckAdd('"', '"')
 
