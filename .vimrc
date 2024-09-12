@@ -915,12 +915,12 @@ endfunction
 
 function! LeftList()
 
-    
+    " see if  we are in a list or table (if table, move to the next cell with
+    " right or left; if list, move to the next line up, only left going)
 
 endfunction
 
 " }-
-
 
 " Function to stay after the - of the list -{
 
@@ -932,17 +932,15 @@ function! CursorMoved()
         " see if we are in the table, if not, move us into the table
         if col('.') == col('$')
             call cursor(line('.'), col('$') - 1)
+            return
+        elseif col('.') == 1
+            call  cursor(line('.'), 2)
+            return
         endif
 
         " get the ends of the cell we are in
-        let left = SidePipe('.', 0)
-        let right = SidePipe('.', 1)
-
-        " 
-
-|   h   |
-| :---: |
-|       |
+"         let left = SidePipe('.', 0)
+"         let right = SidePipe('.', 1)
 
 
     " see if we are in a list now
@@ -1152,10 +1150,10 @@ endfunction
 function! SidePipe(ln, right)
 
     " get the current col
-    let curCol = col(a:ln)
+    let curCol = col(a:ln - 1)
 
     " set up the trackers based on which side we want
-    let pipePos = a:right ? 0 : -1
+    let pipePos = 0
     let mover = a:right ? 1 : -1
 
     " get the line and loop it until we hit a pipe
