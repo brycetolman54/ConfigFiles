@@ -215,7 +215,7 @@ bind '"\\":self-insert' # make \ show \
 
 
 # Git Commands -{
-   
+
 alias gs='git status'
 alias gaa='git add .'
 alias gg='git push'
@@ -233,7 +233,15 @@ function gc {
         git checkout $1
     fi
 }
-
+function cfu {
+    gp here
+    cd ~/ConfigFiles
+    cp ../.vimrc .
+    cp ../.bashrc .
+    gm "Update: $(date)"
+    gg
+    cd "$here"
+}
 
 # }-
 
