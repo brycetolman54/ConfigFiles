@@ -939,9 +939,13 @@ function! CursorMoved()
         endif
 
         " get the ends of the cell we are in
-"         let left = SidePipe('.', 0)
-"         let right = SidePipe('.', 1)
+        let left = SidePipe('.', 0)
+        let right = SidePipe('.', 1) - 1
 
+        " see if we are in an empty cell and move to the middle if we are
+        if strpart(getline('.'), left, right-left) =~ '^\s*$'
+            call cursor(line('.'), left + 1 + (right - left) / 2)
+        endif
 
 
     " see if we are in a list now
