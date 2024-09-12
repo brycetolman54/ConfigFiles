@@ -1220,5 +1220,6 @@ endfunction
 " beginning of the list
 " TODO: make a function to find if what is at the beginning of the line is for" a list or not
 
+
 " this is for comments in vimrc specifically
 inoremap <expr> -{ "-{}-<Left><Left>"
