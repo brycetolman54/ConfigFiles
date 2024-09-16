@@ -205,7 +205,8 @@ alias dct='deactivate' # Deactivate env
 
 # Bindings -{
 
-bind 'set completion-ignore-case on'
+bind 'set bell-style none' # no bells
+bind 'set completion-ignore-case on' # ignore case in autocomplete
 bind 'set show-all-if-ambiguous on' # to show all options from tab
 bind '\C-e:end-of-line' # to move to end of line
 bind '\C-b:beginning-of-line' # to move to beginning of line
@@ -257,8 +258,7 @@ alias wcL='echo \ \ L \ \ W \ \ C \ \ File && wc' # format wc output
 
 # Shortcut Bash Commands -{
 
-alias c='clear' # clear
-alias cx='clear -x' # clear with scrollback
+alias c='clear -x' # clear
 
 alias e='vim ~/.bashrc' # edit bashrc
 alias s='source ~/.bashrc' # source bashrc
