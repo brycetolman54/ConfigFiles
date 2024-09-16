@@ -276,10 +276,14 @@ highlight SpecialKey ctermfg=Grey
 " 7) Windows and Tabs -{
 
 " Move to other windows
-map <C-j> <C-W>j
-map <C-k> <C-W>
-map <C-l> <C-W>l
-map <C-h> <C-W>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+nnoremap <C-h> <C-w>h
+inoremap <C-j> <C-o><C-w>j
+inoremap <C-k> <C-o><C-w>k
+inoremap <C-l> <C-o><C-w>l
+inoremap <C-h> <C-o><C-w>h
 
 set splitright " vertical split to the right of the current window
 set splitbelow " horizontal split below the current window
@@ -337,6 +341,9 @@ function! SetWrap()
         set nowrap
     endif
 endfunction
+
+" Don't line break automatically
+set textwidth=0
 
 " Set Wrap when vim starts
    autocmd VimEnter * call SetWrap() 
@@ -1422,7 +1429,10 @@ abbrev Omega Ω
 " TODO: update cursor movement to wrap tables and lists (lists at beginning,
 " tables at the edge of either column)
 " TODO: incorporate BS and Delete into the table width adjustment (from their functions, call and add necessary spaces to the column to make up for loss)
-
+" TODO: make it so i can press space twice in order to hop out of the bold or outside quotation marks or such
+" TODO: fix the tables
+" TODO: make it so sup and sub don't work like the others, I pretty much
+" always want to use them together
 
 
 " this is for comments in vimrc specifically

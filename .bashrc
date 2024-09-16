@@ -65,11 +65,33 @@ alias dn='cd ~/Downloads' # to Downloads
 # Shortcuts for Functionality -{
    
 alias idea='~/../../../c/Users/bat20/AppData/Local/JetBrains/Toolbox/scripts/idea.cmd' # opens IntelliJ
-alias pysh='winpty python3.exe' # runs Python shell
-alias p='python' # run Python programs
 alias fiji='ImageJ-win64.exe 2>/dev/null' # open FIJI for image analysis
 alias glow='winpty glow.exe' # use Glow for .md files
 alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql' # start SQL
+# runs python programs -{
+function p {
+    # see if we have an argument
+    if [ -z $1 ]; then
+        # just run R
+        winpty python3.exe
+    else
+
+        # check that we only have one file
+        if [ $# -ne 1 ]; then
+            echo "use only one file in the argument"
+            return 0
+        fi
+
+        # check that the file is the right type
+        if [ -n $(echo $1 | grep .py$) ]; then
+            python $1
+        else
+            echo "use an appropriate file type"
+        fi
+    fi
+}
+# }-
+
 # runs C++ programs -{
 function runc {
 
@@ -160,28 +182,6 @@ function pdf {
     fi
 }
 # }-
-# view Images -{
-function img {
-    if [ -z $1 ]; then
-        echo "please provide an image or video file"
-    else
-        # update to change screen size
-        wsl timg -g50x50 $1
-    fi
-}
-# }-
-# use Pandoc -{
-function pdoc {
-    if [ -z $1 ]; then
-        echo "Please provide the file you want to use and the name of the file"
-    elif [ -z $2 ]; then
-        echo "Please provide a name for the file"
-    else
-        # use the pandoc
-        wsl pandoc $1 -o $2
-    fi
-}
-# }-
 
 alias chess='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/client_jar/client.jar' # start ChessCafe
 alias cheser='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/server_jar/server.jar' # start ChessCafe Server
@@ -205,6 +205,7 @@ alias dct='deactivate' # Deactivate env
 
 # Bindings -{
 
+bind 'set completion-ignore-case on'
 bind 'set show-all-if-ambiguous on' # to show all options from tab
 bind '\C-e:end-of-line' # to move to end of line
 bind '\C-b:beginning-of-line' # to move to beginning of line
@@ -306,3 +307,37 @@ alias uml='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/
 
 # }-
 
+
+# WSL Commands -{
+
+alias mvn='wsl mvn'
+
+alias gradle='wsl gradle'
+
+alias tree='wsl tree' # list in tree
+
+# view Images -{
+function img {
+    if [ -z $1 ]; then
+        echo "please provide an image or video file"
+    else
+        # update to change screen size
+        wsl timg -g50x50 $1
+    fi
+}
+# }-
+
+# use Pandoc -{
+function pdoc {
+    if [ -z $1 ]; then
+        echo "Please provide the file you want to use and the name of the file"
+    elif [ -z $2 ]; then
+        echo "Please provide a name for the file"
+    else
+        # use the pandoc
+        wsl pandoc $1 -o $2
+    fi
+}
+# }-
+
+# }-
