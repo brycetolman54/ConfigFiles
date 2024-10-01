@@ -57,7 +57,7 @@ alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University' # to BYU OneDrive
 alias cds='od && cd BYU/Coding' # to Coding Projects
 alias tds='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Go/Go_CLI' # to Todo app
 alias dn='cd ~/Downloads' # to Downloads
-
+alias cc='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/ccbcge'
 
 # }-
 
@@ -155,7 +155,7 @@ function rr {
     # see if we have an argument
     if [ -z $1 ]; then
         # just run R
-        r
+        R
     else
 
         # check that we only have one file
@@ -185,8 +185,9 @@ function pdf {
 
 alias chess='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/client_jar/client.jar' # start ChessCafe
 alias cheser='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/server_jar/server.jar' # start ChessCafe Server
-alias ms='p /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/FunProjects/MineSweeper/ms.py' # play MineSweeper
-
+function ms {
+    python "/c/Users/bat20/OneDrive - Brigham Young University/BYU/Coding/FunProjects/MineSweeper/ms.py"
+}
 
 # Set up Python env -{
 function newEnv {
@@ -264,6 +265,7 @@ alias e='vim ~/.bashrc' # edit bashrc
 alias s='source ~/.bashrc' # source bashrc
 alias cb='cat ~/.bashrc' # show bashrc
 alias ev='vim ~/.vimrc' # edit vimrc
+alias er='vim ~/.Rprofile' # edit rprofile
 
 
 alias gb='go build' # build go projects

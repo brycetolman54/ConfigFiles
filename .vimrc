@@ -96,8 +96,8 @@ set foldminlines=2
 set foldcolumn=0
 
 " allows me to open and close with the mouse
-nnoremap <silent> <2-LeftMouse> :call ToggleFold()<CR>
-inoremap <silent> <2-LeftMouse> <C-o>:call ToggleFold()<CR>
+nnoremap <silent> <2-LeftMouse> :call ToggleFold()<Return>
+inoremap <silent> <2-LeftMouse> <C-o>:call ToggleFold()<Return>
 
 function! ToggleFold()
 
@@ -155,36 +155,36 @@ inoremap <leader>col  <Esc>:COL<Return>
 " inoremap <leader>rh
 
 " Markdown Tools
-inoremap <leader>ct <C-o>:CT<CR>
-inoremap <leader>al <C-o>:AL 1<CR>
-inoremap <leader>ala <C-o>:AL 0<CR>
-inoremap <leader>ac <C-o>:AC 1<CR>
-inoremap <leader>acl <C-o>:AC 0<CR>
-inoremap <leader>dc <C-o>:DC<CR>
-inoremap <leader>ck <C-o>:CK 1<CR>
-inoremap <leader>cka <C-o>:CK 0<CR>
-inoremap <leader>` ```<CR><CR>```<Up>
+inoremap <leader>ct <C-o>:CT<Return>
+inoremap <leader>al <C-o>:AL 1<Return>
+inoremap <leader>ala <C-o>:AL 0<Return>
+inoremap <leader>ac <C-o>:AC 1<Return>
+inoremap <leader>acl <C-o>:AC 0<Return>
+inoremap <leader>dc <C-o>:DC<Return>
+inoremap <leader>ck <C-o>:CK 1<Return>
+inoremap <leader>cka <C-o>:CK 0<Return>
+inoremap <leader>` ```<Return><Return>```<Up>
 inoremap <expr> <leader>bo AddTagI("<b>","</b>")
 inoremap <expr> <leader>it AddTagI("<i>","</i>")
 inoremap <expr> <leader>st AddTagI("<s>","</s>")
 inoremap <expr> <leader>su AddTagI("<sup>","</sup>")
 inoremap <expr> <leader>dn AddTagI("<sub>","</sub>")
-inoremap <leader>fr <C-o>:FR<CR>
-vnoremap <leader>bo :call AddTagV("<b>", "</b>")<CR>
-vnoremap <leader>it :call AddTagV("<i>", "</i>")<CR>
-vnoremap <leader>st :call AddTagV("<s>", "</s>")<CR>
-vnoremap <leader>su :call AddTagV("<sup>", "</sup>")<CR>
-vnoremap <leader>dn :call AddTagV("<sub>", "</sub>")<CR>
+inoremap <leader>fr <C-o>:FR<Return>
+vnoremap <leader>bo :call AddTagV("<b>", "</b>")<Return>
+vnoremap <leader>it :call AddTagV("<i>", "</i>")<Return>
+vnoremap <leader>st :call AddTagV("<s>", "</s>")<Return>
+vnoremap <leader>su :call AddTagV("<sup>", "</sup>")<Return>
+vnoremap <leader>dn :call AddTagV("<sub>", "</sub>")<Return>
 
 " Coding Tools
-inoremap <leader>/o <C-o>:call Comment(&filetype, line('.'), 1)<CR>
-inoremap <leader>/i <C-o>:call Comment(&filetype, line('.'), 0)<CR>
-vnoremap <leader>/o :call Comment(&filetype, line('.'), 1)<CR>
-vnoremap <leader>/i :call Comment(&filetype, line('.'), 0)<CR>
-inoremap <leader>] <C-o>:call Indent(line('.'), 1)<CR>
-inoremap <leader>[ <C-o>:call Indent(line('.'), 0)<CR>
-vnoremap <leader>] :call Indent(line('.'), 1)<CR>
-vnoremap <leader>[ :call Indent(line('.'), 0)<CR>
+inoremap <leader>/o <C-o>:call Comment(&filetype, line('.'), 1)<Return>
+inoremap <leader>/i <C-o>:call Comment(&filetype, line('.'), 0)<Return>
+vnoremap <leader>/o :call Comment(&filetype, line('.'), 1)<Return>
+vnoremap <leader>/i :call Comment(&filetype, line('.'), 0)<Return>
+inoremap <leader>] <C-o>:call Indent(line('.'), 1)<Return>
+inoremap <leader>[ <C-o>:call Indent(line('.'), 0)<Return>
+vnoremap <leader>] :call Indent(line('.'), 1)<Return>
+vnoremap <leader>[ :call Indent(line('.'), 0)<Return>
 
 " R Tools
 inoremap <leader>cat cat("\n\n")<Left><Left><Left><Left>
@@ -192,6 +192,9 @@ inoremap <leader>t TRUE
 inoremap <leader>f FALSE
 inoremap <leader>ll NULL
 inoremap <leader>l \|>
+
+" Python
+inoremap <leader>- if __name__ == "__main__":<Return>
 
 "}-
 
@@ -222,17 +225,17 @@ inoremap <C-v> <C-o>V
 " Mappings for the Markdown Table function
 " for letter in range(97, 122)
 "     let char = nr2char(letter)
-"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<Return>'
 " endfor
 " for Letter in range(65, 90)
 "     let char = nr2char(Letter)
-"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<Return>'
 " endfor
 " for number in range(48, 57)
 "     let char = nr2char(number)
-"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<CR>'
+"     execute 'inoremap ' . char . ' ' . char . '<C-o>:call ColumnWidth()<Return>'
 " endfor
-" inoremap <Space> <Space><C-o>:call ColumnWidth(' ')<CR>
+" inoremap <Space> <Space><C-o>:call ColumnWidth(' ')<Return>
 
 " }-
 
@@ -417,7 +420,7 @@ set undofile
 
 set completeopt+=longest " complete the longest common text
 set completeopt+=menuone " show even if there's one item
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt><Down>" : ""<CR>'
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt><Down>" : ""<Return>'
 
 " }-"
 
