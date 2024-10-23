@@ -154,8 +154,13 @@ function runc {
 function rr {
     # see if we have an argument
     if [ -z $1 ]; then
+        # get the current path
+        gp here
+        cds
+        cd Stats
         # just run R
         R
+        cd "$here"
     else
 
         # check that we only have one file
@@ -186,7 +191,7 @@ function pdf {
 alias chess='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/client_jar/client.jar' # start ChessCafe
 alias cheser='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/server_jar/server.jar' # start ChessCafe Server
 function ms {
-    python "/c/Users/bat20/OneDrive - Brigham Young University/BYU/Coding/FunProjects/MineSweeper/ms.py"
+    python "/c/Users/bat20/OneDrive - Brigham Young University/BYU/Coding/FunProjects/MineSweeper/ms.py" $@
 }
 
 # Set up Python env -{
@@ -343,3 +348,4 @@ function pdoc {
 # }-
 
 # }-
+

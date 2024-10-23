@@ -125,7 +125,6 @@ inoremap <leader>gg <C-o>gg
 inoremap <leader>b <C-o>b
 inoremap <leader>e <C-o>e
 
-
 " File Operations
 inoremap <leader><leader> <Esc>
 inoremap <leader>q <Esc>:q!<Return>
@@ -143,7 +142,6 @@ inoremap <leader>P <C-o>P
 inoremap <leader>d <C-o>d
 inoremap <leader>u <C-o>u
 inoremap <leader>dd <C-o>dd
-
 
 " Toggle Help Window
 inoremap <leader>ch <Esc>:CH<Return>
@@ -180,7 +178,7 @@ vnoremap <leader>dn :call AddTagV("<sub>", "</sub>")<Return>
 inoremap <leader>/o <C-o>:call Comment(&filetype, line('.'), 1)<Return>
 inoremap <leader>/i <C-o>:call Comment(&filetype, line('.'), 0)<Return>
 vnoremap <leader>/o :call Comment(&filetype, line('.'), 1)<Return>
-vnoremap <leader>/i :call Comment(&filetype, line('.'), 0)<Return>
+vnoremap <leader>/i :call Comment(#&filetype, line('.'), 0)<Return>
 inoremap <leader>] <C-o>:call Indent(line('.'), 1)<Return>
 inoremap <leader>[ <C-o>:call Indent(line('.'), 0)<Return>
 vnoremap <leader>] :call Indent(line('.'), 1)<Return>
@@ -195,6 +193,9 @@ inoremap <leader>l \|>
 
 " Python
 inoremap <leader>- if __name__ == "__main__":<Return>
+
+" Other
+inoremap <leader>sp <C-o>:set spellfile=/mnt/c/Users/bat20/.vim/spell/en.utf-8.add<Return>
 
 "}-
 
@@ -383,9 +384,6 @@ set ruler " show line and column number in the status bar
 " 12) Run Configuration -{
 
 set spell " Check spelling
-
-" Set up the file to ignore words for checking
-let $MYSPELL = expand('~') . '.vim/spell/en.utf-8.add' 
 
 set omnifunc=syntaxcomplete#Complete
 set completeopt+=menuone,noselect
