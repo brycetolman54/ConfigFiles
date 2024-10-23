@@ -246,6 +246,7 @@ function cfu {
     cd ~/ConfigFiles
     cp ../.vimrc .
     cp ../.bashrc .
+    cp ../.Rprofile .
     gm "Update: $(date)"
     gg
     cd "$here"

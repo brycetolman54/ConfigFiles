@@ -22,23 +22,37 @@ if(interactive()) {
     options(repl.tab.complete = TRUE)
 
     # let me clear the screen in the terminal
-    c = function() {
+    cc = function() {
         invisible(system("clear"))
     }
 }
 
 # Let's me change the working directory to a set of presets
-cd = function(name = "class") {
+cd = function(name = "cds") {
     paths = list(
         "home" = "C:/Users/bat20",
+        "cds" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/Coding/Stats",
         "class" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/BIO564/Codes",
-        "lab" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab"
+        "lab" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer"
     )
 
     if (!is.null(paths[[name]])) {
         setwd(paths[[name]])
         cat("Changed directory to", paths[[name]], "\n")
+        load(".RData")
+        cat("Loaded Data\n")
+        loadhistory(".Rhistory")
+        cat("Loaded History\n")
     } else {
         cat("Directory name not found.\n")
     }
 }
+
+# Source some functions that I will often use
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/mdMetrics.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/rocCurve.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/collectMerged.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/readFiles.R")
+
+# go to my home
+cd()
