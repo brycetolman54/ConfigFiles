@@ -10,21 +10,12 @@ suppressMessages({library(reticulate)})
 # set the virtual env location for reticulate
 use_virtualenv(paste0("C:/Users/bat20/.virtualenvs/r-keras"), required = TRUE)
 
-# Settings based on if I am in the terminal or not
-if(interactive()) {
+# allow autocomplete in the terminal
+options(repl.tab.complete = TRUE)
 
-    # clear the screen on startup
-    cat("\014")
-
-} else {
-    
-    # allow autocomplete in the terminal
-    options(repl.tab.complete = TRUE)
-
-    # let me clear the screen in the terminal
-    cc = function() {
-        invisible(system("clear"))
-    }
+# let me clear the screen in the terminal
+cc = function() {
+    invisible(system("clear"))
 }
 
 # Let's me change the working directory to a set of presets
@@ -49,10 +40,15 @@ cd = function(name = "cds") {
 }
 
 # Source some functions that I will often use
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/mdMetrics.R")
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/rocCurve.R")
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/collectMerged.R")
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/Functions/readFiles.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/mdMetrics.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/rocCurve.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/collectMerged.R")
+source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/readFiles.R")
 
 # go to my home
-cd()
+
+
+# clear the screen
+if(interactive()) {
+    cat("\014")
+}

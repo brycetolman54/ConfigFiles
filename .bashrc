@@ -57,6 +57,7 @@ alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University' # to BYU OneDrive
 alias cds='od && cd BYU/Coding' # to Coding Projects
 alias tds='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Go/Go_CLI' # to Todo app
 alias dn='cd ~/Downloads' # to Downloads
+alias ldn='ls ~/Downloads' # list Downloads
 alias cc='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/ccbcge'
 
 # }-
@@ -87,7 +88,7 @@ function p {
             python $1
         else
             echo "use an appropriate file type"
-        fi
+            fi
     fi
 }
 # }-
@@ -191,7 +192,7 @@ function pdf {
 alias chess='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/client_jar/client.jar' # start ChessCafe
 alias cheser='java -jar /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Fall/CS240/Chess/out/artifacts/server_jar/server.jar' # start ChessCafe Server
 function ms {
-    python "/c/Users/bat20/OneDrive - Brigham Young University/BYU/Coding/FunProjects/MineSweeper/ms.py" $@
+    python "/c/Users/bat20/OneDrive - Brigham Young University/BYU/Coding/Python/MineSweeper/ms.py" $@
 }
 
 # Set up Python env -{
@@ -205,6 +206,14 @@ function newEnv {
 }
 # }-
 alias dct='deactivate' # Deactivate env
+
+# move from downloads -{
+function mdn {
+    for file in ~/Downloads/$1; do
+        mv "$file" .
+    done
+}
+# }-
 
 # }-
 
