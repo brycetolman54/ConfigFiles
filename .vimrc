@@ -92,7 +92,7 @@ else
     set foldmarker={,}
     set foldlevel=99
 endif
-set foldminlines=2
+set foldminlines=3
 set foldcolumn=0
 
 " allows me to open and close with the mouse
@@ -193,6 +193,9 @@ inoremap <leader>l \|>
 
 " Python
 inoremap <leader>- if __name__ == "__main__":<Return>
+
+" Markdown
+inoremap <leader>! <!--{--><Return><Return><Return><Return><!--}--><Up><Up>- 
 
 " Other
 inoremap <leader>sp <C-o>:set spellfile=/mnt/c/Users/bat20/.vim/spell/en.utf-8.add<Return>
@@ -384,6 +387,10 @@ set ruler " show line and column number in the status bar
 " 12) Run Configuration -{
 
 set spell " Check spelling
+highlight clear SpellBad
+highlight SpellBad cterm=underline ctermfg=red
+
+filetype plugin on
 
 set omnifunc=syntaxcomplete#Complete
 set completeopt+=menuone,noselect
@@ -394,10 +401,6 @@ set fileformat=unix " Use LF for line terminator
 
 " Ignore certain file types for vim
 set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
-
-" Sets up the path to python for Vim plugins
-set pythonthreedll=C:/Users/bat20/AppData/Local/Programs/Python/Python311/python311.dll 
-set pythonthreehome=C:/Users/bat20/AppData/Local/Programs/Python/Python311/
 
 " Show a column at the left with notifications
 set signcolumn=yes
@@ -585,7 +588,7 @@ function! OpenColorsWindow()
     \ "Blink     Esc[5m      .",
     \ "RS Bl     Esc[25m     .",
     \ "Text Col  Esc[38;5;   .",
-    \ "RS Text   Color + 0m  .",
+    \ "RS Text   Color + 15  .",
     \ "BG Color  Esc[48;5;   .",
     \ "RS BG     BG + 0m     .",
     \ "                      .",
@@ -1368,57 +1371,15 @@ endfunction
 
 " 18) Abbreviations -{
 
-abbrev alpha α
-abbrev beta β
-abbrev gamma γ
-abbrev delta δ
-abbrev epsilon ε
-abbrev zeta ζ
-abbrev eta η
-abbrev theta θ
-abbrev iota ι
-abbrev kappa κ
-abbrev lambda λ
-abbrev mu μ
-abbrev nu ν
-abbrev xi ξ
-abbrev omicron ο
-abbrev pi π
-abbrev rho ρ
-abbrev sigma σ
-abbrev tau τ
-abbrev upsilon υ
-abbrev phi φ
-abbrev chi χ
-abbrev psi ψ
-abbrev omega ω
-
-abbrev Alpha Α
-abbrev Beta Β
-abbrev Gamma Γ
-abbrev Delta Δ
-abbrev Epsilon Ε
-abbrev Zeta Ζ
-abbrev Eta Η
-abbrev Theta Θ
-abbrev Iota Ι
-abbrev Kappa Κ
-abbrev Lambda Λ
-abbrev Mu Μ
-abbrev Nu Ν
-abbrev Xi Ξ
-abbrev Omicron Ο
-abbrev Pi Π
-abbrev Rho Ρ
-abbrev Sigma Σ
-abbrev Tau Τ
-abbrev Upsilon Υ
-abbrev Phi Φ
-abbrev Chi Χ
-abbrev Psi Ψ
-abbrev Omega Ω
 
 " }-
+
+
+" 19) Syntax -{
+
+
+" }-
+
 
 " TODO: make it so I can remove the - easily like comments
 " TODO: make it so I can use a,b,c and i,ii,iii in lists

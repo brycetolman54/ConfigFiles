@@ -18,6 +18,7 @@ cc = function() {
     invisible(system("clear"))
 }
 
+
 # Let's me change the working directory to a set of presets
 cd = function(name = "cds") {
     paths = list(
@@ -30,23 +31,41 @@ cd = function(name = "cds") {
     if (!is.null(paths[[name]])) {
         setwd(paths[[name]])
         cat("Changed directory to", paths[[name]], "\n")
-        load(".RData")
-        cat("Loaded Data\n")
-        loadhistory(".Rhistory")
-        cat("Loaded History\n")
     } else {
         cat("Directory name not found.\n")
     }
 }
 
 # Source some functions that I will often use
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/mdMetrics.R")
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/rocCurve.R")
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/collectMerged.R")
-source("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/readFiles.R")
+lf = function(which = 'all') {
+    if(which == 'all') {
+        files = list.files("C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/", pattern = "\\.R$", full.names = TRUE)
+        for(file in files) {
+            source(file)
+        }
+    }
+    else {
+        paths = list(
+            "bf" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/bakeFiles.R",
+            "cm" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/collectMerged.R",
+            "mm" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/mdMetrics.R",
+            "pp" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/plotPCA.R",
+            "rf" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/readFiles.R",
+            "rc" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/rocCurve.R"
+        )
+        if (!is.null(paths[[which]])) {
+            source(paths[[which]])
+        } else {
+            cat("Function not found.\n")
+        }
+    }
+}
 
-# go to my home
+# set an environment variable
+Sys.setenv(TF_ENABLE_ONEDNN_OPTS = 0)
 
+# move to lab
+cd("lab")
 
 # clear the screen
 if(interactive()) {

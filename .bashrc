@@ -30,7 +30,7 @@
 
 export R_HOME="~"
 
-export EDITOR="vim" # set editor as Vim
+export EDITOR="nvim" # set editor as Vim
 
 export NVM_DIR="$HOME/.nvm" # set NVM directory
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -50,22 +50,27 @@ export LS_COLORS=$LS_COLORS:'*.java=1;31' # set Java file color
 
 
 # Shortcuts to Locations -{
+# 
 
-alias sem='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/' # to current semester
+alias sem='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2025/Winter' # to current semester
+alias lab='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/Lab/BreastCancer' # to my Piccolo lab folder
 alias dd='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Spring-Summer/CS260/dailydose' # to DailyDose code
 alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University' # to BYU OneDrive
 alias cds='od && cd BYU/Coding' # to Coding Projects
 alias tds='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Go/Go_CLI' # to Todo app
 alias dn='cd ~/Downloads' # to Downloads
 alias ldn='ls ~/Downloads' # list Downloads
+alias pic='cd ~/OneDrive/Fun\ Stuff/Pictures/Screenshots'
 alias cc='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/ccbcge'
 
 # }-
 
 
 # Shortcuts for Functionality -{
-   
+
+alias v='winpty nvim'
 alias idea='~/../../../c/Users/bat20/AppData/Local/JetBrains/Toolbox/scripts/idea.cmd' # opens IntelliJ
+alias prom='/c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/SoftwareLabs/204/Unit8/Prometheus/prometheus.exe'
 alias fiji='ImageJ-win64.exe 2>/dev/null' # open FIJI for image analysis
 alias glow='winpty glow.exe' # use Glow for .md files
 alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql' # start SQL
@@ -213,6 +218,11 @@ function mdn {
         mv "$file" .
     done
 }
+function mpc {
+    for file in ~/OneDrive/Fun\ Stuff/Pictures/Screenshots/$1; do
+        mv "$file" .
+    done
+}
 # }-
 
 # }-
@@ -274,7 +284,8 @@ alias wcL='echo \ \ L \ \ W \ \ C \ \ File && wc' # format wc output
 
 # Shortcut Bash Commands -{
 
-alias c='clear -x' # clear
+alias c='clear' # clear
+alias cx='clear -x' # clear with scroll back
 
 alias e='vim ~/.bashrc' # edit bashrc
 alias s='source ~/.bashrc' # source bashrc
@@ -350,12 +361,82 @@ function pdoc {
         echo "Please provide the file you want to use and the name of the file"
     elif [ -z $2 ]; then
         echo "Please provide a name for the file"
-    else
+    elif [ -z $3 ]; then
         # use the pandoc
         wsl pandoc $1 -o $2
+    else
+        wsl pandoc $1 -o $2 -H $3
     fi
 }
 # }-
 
 # }-
 
+
+# Messing Around -{
+
+function helpme {
+
+    if [ $# -gt 0 ] && [ "$1" != "t" ] && [ "$1" != "g" ] && [ "$1" != "e" ]; then
+        echo -e "  \u001b[38;5;160mThat is not a valid argument\u001b[38;5;15m"
+        echo -e "  \u001b[38;5;160mThe valid arguments are the following: g, t, e\u001b[38;5;15m"
+        echo -e "  \u001b[38;5;160mPlease try again with one of those arguments (or none)\u001b[38;5;15m"
+    fi
+
+    if [ $# -eq 0 ] || [ "$1" == "t" ]; then
+        echo -e ""
+        echo -e "  \u001b[38;5;5mTerminal Commands:\u001b[38;5;15m"
+        echo -e "  \u001b[38;5;5m------------------\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;12mcd\u001b[38;5;13m <folder>\u001b[38;5;15m                   moves to the specified folder"
+        echo -e "                                    \u001b[38;5;136mUsing '..' for the folder moves you up a folder\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;12mcode\u001b[38;5;13m <folder>\u001b[38;5;15m                 open Visual Studio Code with the folder"
+        echo -e "                                    \u001b[38;5;136mUse '.' as the folder when you are in the project folder\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;12mls\u001b[38;5;15m                            lists all the files/folders in the current folder"
+        echo -e "                                    \u001b[38;5;136mFolders are blue and have / at the end\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;46m[c]\u001b[38;5;12mlear\u001b[38;5;15m                       clear the screen"
+    fi
+
+
+    if [ $# -eq 0 ] || [ "$1" == "g" ]; then
+        echo -e ""
+        echo -e "  \u001b[38;5;5mGit Commands:\u001b[38;5;15m"
+        echo -e "  \u001b[38;5;5m-------------\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;46m[gp]\u001b[38;5;15m \u001b[38;5;12mgit pull\u001b[38;5;15m                 pull down the changes from GitHub"
+        echo -e "                                    \u001b[38;5;136mMake sure to do this every time you start coding\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;46m[ga]\u001b[38;5;15m \u001b[38;5;12mgit add\u001b[38;5;13m <file>\u001b[38;5;15m           add a file to be tracked by git"
+        echo -e "                                    \u001b[38;5;136mMake sure to add all new files\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;46m[gm]\u001b[38;5;15m \u001b[38;5;12mgit commit\u001b[38;5;13m -am <\"me\">\u001b[38;5;15m    commit changes to git"
+        echo -e "                                    \u001b[38;5;136mThe -a makes it track all the files you have changed\u001b[38;5;15m"
+        echo -e "                                    \u001b[38;5;136mThe -m tells it you are giving the message me (make sure the message is meaningful)\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;46m[gg]\u001b[38;5;15m \u001b[38;5;12mgit push\u001b[38;5;15m                 pushes all your committed changes to GitHub"
+        echo -e "                                    \u001b[38;5;136mMake sure to do this every time you are done working\u001b[38;5;15m"
+    fi
+
+    if [ $# -eq 0 ] || [ "$1" == "e" ]; then
+        echo -e ""
+        echo -e "  \u001b[38;5;5mExplanation:\u001b[38;5;15m"
+        echo -e "  \u001b[38;5;5m------------\u001b[38;5;15m"
+
+        echo -e "    To get this help, type 'helpme' and then Enter"
+        echo -e "    If you only want specific commands, you can use different arguments"
+        echo -e "      This is how you use the arguments: \u001b[38;5;12mhelpme \u001b[38;5;13m<argument>\u001b[38;5;15m"
+        echo -e "    You can use the following arguments:"
+        echo -e "      g - for the git commands"
+        echo -e "      t - for the terminal commands"
+        echo -e "      e - for the explanation"
+
+        echo -e "    For each command, the part in the \u001b[38;5;12m[]\u001b[38;5;15m is the shorthand,"
+        echo -e "    This makes it so you don't have to type the whole command."
+        echo -e "      For example: gm \"my message here\""
+
+        echo -e "    The \u001b[38;5;13m<>\u001b[38;5;15m that follows are the arguments you need to provide."
+        echo -e "    The \u001b[38;5;226m()\u001b[38;5;15m indicates that an argument is optional."
+
+        echo -e "    The indented part after a command gives some additional help."
+
+        echo -e ""
+        echo -e "    Let me know if you have any questions. :)"
+    fi
+}
+
+# }-
