@@ -51,7 +51,8 @@ lf = function(which = 'all') {
             "mm" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/mdMetrics.R",
             "pp" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/plotPCA.R",
             "rf" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/readFiles.R",
-            "rc" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/rocCurve.R"
+            "rc" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/rocCurve.R",
+            "t" = "C:/Users/bat20/OneDrive - Brigham Young University/BYU/2024/Fall/Lab/BreastCancer/functions/timer.R"
         )
         if (!is.null(paths[[which]])) {
             source(paths[[which]])

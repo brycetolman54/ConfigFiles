@@ -69,6 +69,7 @@ alias cc='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fal
 # Shortcuts for Functionality -{
 
 alias v='winpty nvim'
+alias sm='ssh bat54@moat.cs.byu.edu'
 alias idea='~/../../../c/Users/bat20/AppData/Local/JetBrains/Toolbox/scripts/idea.cmd' # opens IntelliJ
 alias prom='/c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/SoftwareLabs/204/Unit8/Prometheus/prometheus.exe'
 alias fiji='ImageJ-win64.exe 2>/dev/null' # open FIJI for image analysis
@@ -221,6 +222,13 @@ function mdn {
 function mpc {
     for file in ~/OneDrive/Fun\ Stuff/Pictures/Screenshots/$1; do
         mv "$file" .
+    done
+}
+
+# delete from downloads
+function ddn {
+    for file in ~/Downloads/$1; do
+        rm "$file"
     done
 }
 # }-
@@ -410,6 +418,9 @@ function helpme {
         echo -e "                                    \u001b[38;5;136mThe -m tells it you are giving the message me (make sure the message is meaningful)\u001b[38;5;15m"
         echo -e "    \u001b[38;5;46m[gg]\u001b[38;5;15m \u001b[38;5;12mgit push\u001b[38;5;15m                 pushes all your committed changes to GitHub"
         echo -e "                                    \u001b[38;5;136mMake sure to do this every time you are done working\u001b[38;5;15m"
+        echo -e "    \u001b[38;5;46m[gs]\u001b[38;5;15m \u001b[38;5;12mgit status\u001b[38;5;15m               shows you the status of your git files"
+        echo -e "                                    \u001b[38;5;136mthis shows which files have not been added\u001b[38;5;15m"
+        echo -e "                                    \u001b[38;5;136mthis also shows which files have not been committed after editing\u001b[38;5;15m"
     fi
 
     if [ $# -eq 0 ] || [ "$1" == "e" ]; then
@@ -440,3 +451,5 @@ function helpme {
 }
 
 # }-
+
+
