@@ -1,13 +1,11 @@
 # change to the right working directory
 setwd("C:/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/BIO564/Codes")
 
-# load some libraries I always use
-suppressMessages({library(tidyverse)})
-suppressMessages({library(tidymodels)})
-suppressMessages({library(keras3)})
 suppressMessages({library(reticulate)})
 
 # set the virtual env location for reticulate
+use_python("C:/Users/bat20/AppData/Local/Programs/Python/Python311/Python11/python.exe", required = TRUE)
+
 use_virtualenv(paste0("C:/Users/bat20/.virtualenvs/r-keras"), required = TRUE)
 
 # allow autocomplete in the terminal

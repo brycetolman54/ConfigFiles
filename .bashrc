@@ -30,7 +30,9 @@
 
 export R_HOME="~"
 
-export EDITOR="nvim" # set editor as Vim
+export EDITOR="vim" # set editor as Vim
+
+export PATH=/c/Users/bat20/AppData/Local/Programs/Python/Python313:$PATH
 
 export NVM_DIR="$HOME/.nvm" # set NVM directory
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -55,6 +57,7 @@ export LS_COLORS=$LS_COLORS:'*.java=1;31' # set Java file color
 alias sem='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2025/Winter' # to current semester
 alias lab='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2024/Fall/Lab/BreastCancer' # to my Piccolo lab folder
 alias dd='cd ~/OneDrive\ -\ Brigham\ Young\ University/BYU/2023/Spring-Summer/CS260/dailydose' # to DailyDose code
+alias odd='cd ~/OneDrive'
 alias od='cd ~/OneDrive\ -\ Brigham\ Young\ University' # to BYU OneDrive
 alias cds='od && cd BYU/Coding' # to Coding Projects
 alias tds='cd /c/Users/bat20/OneDrive\ -\ Brigham\ Young\ University/BYU/Coding/Go/Go_CLI' # to Todo app
@@ -98,7 +101,6 @@ function p {
     fi
 }
 # }-
-
 # runs C++ programs -{
 function runc {
 
@@ -452,4 +454,5 @@ function helpme {
 
 # }-
 
+odd
 

@@ -129,7 +129,7 @@ inoremap <leader>e <C-o>e
 inoremap <leader><leader> <Esc>
 inoremap <leader>q <Esc>:q!<Return>
 inoremap <leader>x <Esc>:x<Return>
-inoremap <leader>w <Esc>:w<Return>i<Right>
+inoremap <leader>w <Esc>:w<Return>
 inoremap <leader>s <Esc>:w<Return>:source ~/.vimrc<Return>
 
 " Formatting Operations
