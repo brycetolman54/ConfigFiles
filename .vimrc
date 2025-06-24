@@ -1,4 +1,4 @@
-" 1) Opening Notes -{
+" 0) Opening Notes -{
 "
 "
 "
@@ -83,6 +83,9 @@
 
 " 2) Folding Sections -{
 
+set fillchars=foldopen:O,foldclose:P,foldsep:i,fold:.
+highlight Folded ctermbg=lightblue ctermfg=red cterm=bold
+highlight Visual ctermbg=green
 set foldenable
 set foldmethod=marker
 if expand('%') =~# 'vimrc$' || expand('%') =~# 'bashrc$'
@@ -342,7 +345,7 @@ inoremap <Up> <C-o>gk
 
 " Function to set wrap based on window width
 function! SetWrap()
-    if winwidth(0) <= 85
+    if winwidth(0) <= 50
         set wrap
     else
         set nowrap
@@ -413,6 +416,13 @@ set nobackup " Doesn't save backup files
 set noswapfile " Doesn't store .swp files
 set undodir=~/.vim/undodir
 set undofile
+
+" Move cursor to last position on opening
+autocmd BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+
 
 "}-
 
@@ -1379,7 +1389,6 @@ endfunction
 
 
 " }-
-
 
 " TODO: make it so I can remove the - easily like comments
 " TODO: make it so I can use a,b,c and i,ii,iii in lists
