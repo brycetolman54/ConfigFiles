@@ -137,8 +137,8 @@ function gc {
 function cfu {
   gp here
   cd ~/.ConfigFiles
-  cp ../.vimrc .
-  cp ../.bashrc .
+  cp ../.vimrc ./vimrc_$(hostname)
+  cp ../.bashrc ./bashrc_$(hostname)
   gm "Update: $(date)"
   gg
   cd "$here"
