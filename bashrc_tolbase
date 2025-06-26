@@ -101,7 +101,7 @@ function cfu {
 function cfd {
     gp here
     cd ~/.ConfigFiles
-    ./other.sh
+    source other.sh
     cd "$here"
 }
 
