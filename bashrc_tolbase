@@ -94,6 +94,7 @@ function cfu {
   cd ~/.ConfigFiles
   cp ../.vimrc ./vimrc_$(hostname)
   cp ../.bashrc ./bashrc_$(hostname)
+  cp ../.dircolors ./dircolors_$(hostname)
   gm "Update: $(date)"
   gg
   cd "$here"
@@ -101,10 +102,9 @@ function cfu {
 function cfd {
     gp here
     cd ~/.ConfigFiles
-    git pull
     cp "vimrc_$HOSTNAME" ~/.vimrc
     cp "bashrc_$HOSTNAME" ~/.bashrc
-    cp .dircolors ~
+    cp "dircolors_$HOSTNAME" ~/.dircolors
     cd "$here"
 }
 
@@ -125,8 +125,8 @@ alias cx='clear -x' # clear with scroll back
 
 alias dc='dirs -c'
 
-alias e='vim ~/.bashrc'    # edit bashrc
-alias ed='vim ~/.dircolors' # edit dircolors
+alias e='nvim ~/.bashrc'    # edit bashrc
+alias ed='nvim ~/.dircolors' # edit dircolors
 alias s='source ~/.bashrc' # source bashrc
 alias cb='cat ~/.bashrc'   # show bashrc
 alias ev='vim ~/.vimrc'    # edit vimrc

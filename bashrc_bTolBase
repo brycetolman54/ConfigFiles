@@ -139,6 +139,7 @@ function cfu {
   cd ~/.ConfigFiles
   cp ../.vimrc ./vimrc_$(hostname)
   cp ../.bashrc ./bashrc_$(hostname)
+  cp ../.dircolors ./dircolors_$(hostname)
   gm "Update: $(date)"
   gg
   cd "$here"
@@ -146,10 +147,9 @@ function cfu {
 function cfd {
     gp here
     cd ~/.ConfigFiles
-    git pull
     cp "vimrc_$HOSTNAME" ~/.vimrc
     cp "bashrc_$HOSTNAME" ~/.bashrc
-    cp .dircolors ~
+    cp "dircolors_$HOSTNAME" ~/.dircolors
     cd "$here"
 }
 
