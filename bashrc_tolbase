@@ -103,7 +103,7 @@ function cfd {
     cd ~/.ConfigFiles
     cp "vimrc_$HOSTNAME" ~/.vimrc
     cp "bashrc_$HOSTNAME" ~/.bashrc
-    cp .dircolors
+    cp .dircolors ~
     cd "$here"
 }
 
