@@ -100,10 +100,10 @@ function cfu {
 }
 function cfd {
     gp here
-    cd ~/.Config
+    cd ~/.ConfigFiles
     cp "vimrc_$HOSTNAME" ~/.vimrc
     cp "bashrc_$HOSTNAME" ~/.bashrc
-    cp .dircolors ~Files
+    cp .dircolors
     cd "$here"
 }
 
