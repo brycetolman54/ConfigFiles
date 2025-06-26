@@ -143,6 +143,15 @@ function cfu {
   gg
   cd "$here"
 }
+function cfd {
+    gp here
+    cd ~/.ConfigFiles
+    git pull
+    cp "vimrc_$HOSTNAME" ~/.vimrc
+    cp "bashrc_$HOSTNAME" ~/.bashrc
+    cp .dircolors ~
+    cd "$here"
+}
 
 # }-
 
