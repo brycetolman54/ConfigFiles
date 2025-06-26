@@ -98,6 +98,12 @@ function cfu {
   gg
   cd "$here"
 }
+function cfd {
+    gp here
+    cd ~/.ConfigFiles
+    ./other.sh
+    cd "$here"
+}
 
 # }-
 
