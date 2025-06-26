@@ -28,7 +28,7 @@
 
 export PATH=$PATH:/mnt/c/Windows/System32
 
-export EDITOR="vim" # set editor as Vim
+export EDITOR="nvim" # set editor as Vim
 
 export NVM_DIR="$HOME/.nvm"                                        # set NVM directory
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
@@ -170,8 +170,8 @@ alias cx='clear -x' # clear with scroll back
 
 alias dc='dirs -c'
 
-alias e='vim ~/.bashrc'    # edit bashrc
-alias ed='vim ~/.dircolors' # edit dircolors
+alias e='nvim ~/.bashrc'    # edit bashrc
+alias ed='nvim ~/.dircolors' # edit dircolors
 alias s='source ~/.bashrc' # source bashrc
 alias cb='cat ~/.bashrc'   # show bashrc
 alias ev='vim ~/.vimrc'    # edit vimrc
