@@ -28,11 +28,11 @@
 
 if [ "$(hostname)" = "bTolBase" ]; then
 
-export PATH=$PATH:/mnt/c/Windows/System32
+    export PATH=$PATH:/mnt/c/Windows/System32
 
-export NVM_DIR="$HOME/.nvm"                                        # set NVM directory
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+    export NVM_DIR="$HOME/.nvm"                                        # set NVM directory
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 fi
 
@@ -58,12 +58,15 @@ eval "$(dircolors -b ~/.dircolors)"
 
 if [ "$(hostname)" = "bTolBase" ]; then
 
-alias sem='pushd /mnt/c/users/bat20/OneDrive/UMN/'
-alias od='pushd /mnt/c/users/bat20/OneDrive/'                                            # to BYU OneDrive
-alias cds='pushd ~/Coding'                                                                # to Coding Projects
-alias dn='pushd /mnt/c/users/bat20/Downloads'                                                                          # to Downloads
-alias ldn='ls /mnt/c/users/bat20/Downloads'                                                                         # list Downloads
-alias pic='pushd /mnt/c/users/bat20/OneDrive/Fun\ Stuff/Pictures/Screenshots'
+    alias sem='pushd /mnt/c/users/bat20/OneDrive/UMN/'
+    alias od='pushd /mnt/c/users/bat20/OneDrive/'                                            # to BYU OneDrive
+    alias cds='pushd ~/Coding'                                                                # to Coding Projects
+    alias dn='pushd /mnt/c/users/bat20/Downloads'                                                                          # to Downloads
+    alias ldn='ls /mnt/c/users/bat20/Downloads'                                                                         # list Downloads
+    alias pic='pushd /mnt/c/users/bat20/OneDrive/Fun\ Stuff/Pictures/Screenshots'
+
+fi
+
 alias nv='pushd ~/.config/nvim/'
 alias bm='pushd ~/.config/nvim/pack/plugins/start/batman/lua/batman'
 function up {
@@ -75,9 +78,6 @@ function up {
         done
     fi
 }
-alias rp='rm -rf ~/.config/nvim/pack/plugins/start/plenary'
-
-fi
 
 # }-
 
@@ -85,32 +85,32 @@ fi
 
 if [ "$(hostname)" = "bTolBase" ]; then
 
-alias code='/mnt/c/Users/bat20/AppData/Local/Programs/Microsoft\ VS\ Code/Code.exe'
-alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql' # start SQL
-alias chess='java -jar /mnt/c/users/bat20/Users/bat20/OneDrive/BYU/2023/Fall/CS240/chess/out/artifacts/client_jar/client.jar' # start ChessCafe
-alias cheser='java -jar /mnt/c/users/bat20/Users/bat20/OneDrive/BYU/2023/Fall/CS240/chess/out/artifacts/server_jar/server.jar'        # start ChessCafe Server
-function ms {
-  python "/mnt/c/Users/bat20/OneDrive/BYU/Coding/Python/MineSweeper/ms.py" $@
-}
-# move from downloads -{
-function mdn {
-  for file in /mnt/c/users/bat20/Downloads/$1; do
-    mv "$file" .
-  done
-}
-function mpc {
-  for file in /mnt/c/users/bat20/OneDrive/Fun\ Stuff/Pictures/Screenshots/$1; do
-    mv "$file" .
-  done
-}
+    alias code='/mnt/c/Users/bat20/AppData/Local/Programs/Microsoft\ VS\ Code/Code.exe'
+    alias sql='winpty mysqlsh -u root -pBuBB@l002ooosql --sql' # start SQL
+    alias chess='java -jar /mnt/c/users/bat20/Users/bat20/OneDrive/BYU/2023/Fall/CS240/chess/out/artifacts/client_jar/client.jar' # start ChessCafe
+    alias cheser='java -jar /mnt/c/users/bat20/Users/bat20/OneDrive/BYU/2023/Fall/CS240/chess/out/artifacts/server_jar/server.jar'        # start ChessCafe Server
+    function ms {
+    python "/mnt/c/Users/bat20/OneDrive/BYU/Coding/Python/MineSweeper/ms.py" $@
+    }
+    # move from downloads -{
+    function mdn {
+    for file in /mnt/c/users/bat20/Downloads/$1; do
+        mv "$file" .
+    done
+    }
+    function mpc {
+    for file in /mnt/c/users/bat20/OneDrive/Fun\ Stuff/Pictures/Screenshots/$1; do
+        mv "$file" .
+    done
+    }
 
-# delete from downloads
-function ddn {
-  for file in /mnt/c/users/bat20/Downloads/$1; do
-    rm "$file"
-  done
-}
-# }-
+    # delete from downloads
+    function ddn {
+    for file in /mnt/c/users/bat20/Downloads/$1; do
+        rm "$file"
+    done
+    }
+    # }-
 
 fi
 
@@ -211,16 +211,16 @@ function hid {
 
 if [ "$(hostname)" = "bTolBase" ]; then
 
-# use the clip.exe tool -{
-clip() {
-  "$@" | clip.exe
-}
-# }-
-# Open files in Chrome -{
-function open {
-  chrome "$(pwd)/$1"
-}
-# }-
+    # use the clip.exe tool -{
+    clip() {
+    "$@" | clip.exe
+    }
+    # }-
+    # Open files in Chrome -{
+    function open {
+    chrome "$(pwd)/$1"
+    }
+    # }-
 
 fi
 
